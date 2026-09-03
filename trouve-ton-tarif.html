@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trouve ton tarif — polices système</title>
+<style>html,body{height:100%;}body{margin:0;background:#EDE6DA;display:flex;align-items:flex-start;justify-content:center;padding:48px 16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background-image:radial-gradient(circle at 20% 0%,rgba(196,149,106,0.10),transparent 55%);}</style>
+<!-- ╔════════════════════════════════════════════════════════════╗
+     ║  WIDGET TARIFS — My Sweet Pilates · « Trouve ton tarif »       ║
+     ║  Coller TOUT ce bloc dans un widget HTML EverWeb.             ║
+     ║  Polices SYSTÈME uniquement — aucune dépendance externe.           ║
+     ╚════════════════════════════════════════════════════════════╝ -->
+<style>
+
+#pw-app{
+  /* ── Tokens de marque ── */
+  --pw-cream:#F5F0E8;
+  --pw-cream-2:#FFFCF7;
+  --pw-espresso:#1A1714;
+  --pw-camel:#C4956A;
+  --pw-camel-soft:#E8D5BE;
+  --pw-taupe:#6B5B4E;
+  --pw-mist:#9B8E84;
+  --pw-line:rgba(107,91,78,0.16);
+  --pw-serif:Georgia,'Times New Roman',Cambria,'Hoefler Text',serif;
+  --pw-sans:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  --pw-ease:cubic-bezier(0.22,0.61,0.36,1);
+}
+#pw-app *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+#pw-app{
+  font-family:var(--pw-sans);
+  background:var(--pw-cream);
+  border-radius:26px;
+  padding:34px 28px 26px;
+  max-width:480px;
+  width:100%;
+  margin:0 auto;
+  position:relative;
+  overflow:hidden;
+  color:var(--pw-espresso);
+  box-shadow:0 24px 60px -28px rgba(26,23,20,0.30),0 2px 0 rgba(255,255,255,0.5) inset;
+  animation:pwIn 0.7s var(--pw-ease) both;
+}
+@keyframes pwIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+#pw-app::before{
+  content:'';position:absolute;top:-80px;right:-70px;
+  width:240px;height:240px;border-radius:50%;
+  background:radial-gradient(circle,rgba(196,149,106,0.16) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* Header */
+#pw-app .pw-brand{
+  font-size:10px;letter-spacing:0.34em;text-transform:uppercase;
+  color:var(--pw-camel);font-weight:500;margin-bottom:18px;
+}
+#pw-app .pw-hd{margin-bottom:6px;}
+#pw-app .pw-lbl{
+  font-size:10px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--pw-mist);margin-bottom:8px;
+}
+#pw-app h2{
+  font-family:var(--pw-serif);font-size:46px;font-weight:300;
+  color:var(--pw-espresso);line-height:0.98;letter-spacing:-0.01em;
+}
+#pw-app h2 em{font-style:italic;color:var(--pw-camel);}
+#pw-app .pw-sub{font-size:12.5px;color:var(--pw-mist);margin-top:10px;font-weight:400;line-height:1.5;}
+
+/* Steps */
+#pw-app .pw-step{
+  padding:20px 0;border-top:0.5px solid var(--pw-line);
+  transition:opacity 0.5s var(--pw-ease),filter 0.5s var(--pw-ease);
+}
+#pw-app .pw-step:first-of-type{margin-top:22px;}
+#pw-app .pw-step-hd{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+#pw-app .pw-n{
+  position:relative;z-index:1;
+  width:26px;height:26px;border-radius:50%;
+  border:1px solid var(--pw-camel);display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--pw-camel);font-weight:500;flex-shrink:0;
+  background:var(--pw-cream);
+  transition:transform 0.4s var(--pw-ease),background 0.3s,color 0.3s,border-color 0.3s;
+}
+/* rail reliant les pastilles d'étapes */
+#pw-app .pw-n::before{
+  content:'';position:absolute;left:50%;top:26px;width:1px;height:60px;
+  background:var(--pw-line);transform:translateX(-50%);z-index:-1;
+  transition:background 0.5s var(--pw-ease);
+}
+#pw-app #pw-s3 .pw-n::before{display:none;}
+#pw-app #pw-s2.no-rail .pw-n::before{display:none;}
+#pw-app .pw-n.done{background:var(--pw-camel);color:#fff;border-color:var(--pw-camel);transform:scale(1.04);}
+#pw-app .pw-n.done::before{background:var(--pw-camel-soft);}
+#pw-app .pw-step-ttl{font-size:17px;font-weight:500;color:var(--pw-espresso);letter-spacing:-0.01em;}
+#pw-app .locked{opacity:0.32;pointer-events:none;filter:saturate(0.55);}
+#pw-app .pw-step.reveal .pw-pills,#pw-app .pw-step.reveal .pw-step-ttl{animation:pwRise 0.5s var(--pw-ease) both;}
+@keyframes pwRise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+/* Choices — pills */
+#pw-app .pw-pills{display:flex;flex-wrap:wrap;gap:8px;}
+#pw-app .pw-pill{
+  min-height:44px;padding:0 20px;border-radius:100px;
+  border:0.5px solid var(--pw-line);
+  background:var(--pw-cream-2);
+  font-family:var(--pw-sans);font-size:13.5px;font-weight:400;
+  color:var(--pw-taupe);cursor:pointer;
+  display:inline-flex;align-items:center;
+  transition:border-color 0.2s,color 0.2s,background 0.25s var(--pw-ease),transform 0.12s,box-shadow 0.25s;
+}
+#pw-app .pw-pill:hover{border-color:var(--pw-camel);color:var(--pw-espresso);}
+#pw-app .pw-pill:active{transform:scale(0.96);}
+#pw-app .pw-pill.sel{
+  background:var(--pw-espresso);color:var(--pw-cream);border-color:var(--pw-espresso);
+  box-shadow:0 8px 20px -10px rgba(26,23,20,0.6);
+}
+#pw-app .pw-pill:focus-visible{outline:2px solid var(--pw-camel);outline-offset:2px;}
+
+/* Note d'étape (ex. répartition du Mix) */
+#pw-app .pw-note{
+  display:none;margin-top:14px;padding-top:14px;
+  border-top:0.5px dashed var(--pw-line);
+  font-size:11.5px;color:var(--pw-mist);line-height:1.5;letter-spacing:0.02em;
+}
+#pw-app .pw-note.on{display:block;animation:pwFade 0.4s var(--pw-ease);}
+
+/* Result */
+#pw-app #pw-res{display:none;margin-top:22px;}
+#pw-app #pw-res.on{display:block;animation:pwFade 0.5s var(--pw-ease);}
+@keyframes pwFade{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+#pw-app .pw-card{
+  background:var(--pw-espresso);border-radius:22px;padding:26px 24px 8px;
+  color:var(--pw-cream);position:relative;overflow:hidden;
+  box-shadow:0 26px 50px -26px rgba(26,23,20,0.7);
+}
+#pw-app .pw-card::after{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(196,149,106,0.22) 0%,transparent 70%);}
+#pw-app .pw-rtag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--pw-camel);margin-bottom:6px;}
+#pw-app .pw-rttl{font-family:var(--pw-serif);font-size:32px;font-weight:400;line-height:1.05;letter-spacing:-0.01em;}
+#pw-app .pw-rsub{font-size:11.5px;color:rgba(245,240,232,0.45);margin-bottom:14px;margin-top:5px;}
+
+#pw-app .pw-rows{display:flex;flex-direction:column;position:relative;z-index:1;}
+#pw-app .pw-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:0.5px solid rgba(245,240,232,0.09);}
+#pw-app .pw-row:last-child{border-bottom:none;}
+#pw-app .pw-row.best{
+  margin:6px -14px 0;padding:14px;border-radius:14px;
+  background:rgba(196,149,106,0.12);border-bottom:none;
+}
+#pw-app .pw-rname{font-size:13px;color:rgba(245,240,232,0.72);font-weight:400;display:flex;align-items:center;flex-wrap:wrap;gap:6px;}
+#pw-app .pw-rdet{font-size:11px;color:rgba(245,240,232,0.32);margin-top:3px;}
+#pw-app .pw-rpx{font-family:var(--pw-serif);font-size:27px;font-weight:500;color:var(--pw-cream);text-align:right;line-height:1;}
+#pw-app .pw-rtot{font-size:11px;color:var(--pw-camel);margin-top:4px;text-align:right;}
+#pw-app .pw-rsave{font-size:10.5px;color:var(--pw-camel);margin-top:5px;letter-spacing:0.03em;font-weight:500;}
+#pw-app .pw-best{
+  display:inline-block;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;
+  background:var(--pw-camel);color:var(--pw-espresso);padding:3px 8px;border-radius:100px;
+  font-weight:600;font-family:var(--pw-sans);
+}
+
+/* Essai */
+#pw-app .pw-essai{
+  margin-top:14px;background:var(--pw-camel-soft);border-radius:16px;
+  padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+#pw-app .pw-elbl{font-size:11.5px;color:var(--pw-taupe);letter-spacing:0.04em;line-height:1.4;}
+#pw-app .pw-elbl b{color:var(--pw-espresso);font-weight:500;}
+#pw-app .pw-epx{font-family:var(--pw-serif);font-size:26px;font-weight:500;color:var(--pw-espresso);white-space:nowrap;}
+
+/* Reset */
+#pw-app .pw-reset{
+  margin:16px auto 0;font-size:12px;color:var(--pw-mist);cursor:pointer;
+  background:none;border:none;font-family:var(--pw-sans);padding:6px 0;
+  display:flex;align-items:center;gap:6px;transition:color 0.2s;letter-spacing:0.02em;
+}
+#pw-app .pw-reset:hover{color:var(--pw-taupe);}
+
+/* Responsive */
+@media(max-width:380px){
+  #pw-app{padding:26px 18px 22px;border-radius:22px;}
+  #pw-app h2{font-size:38px;}
+  #pw-app .pw-rttl{font-size:27px;}
+}
+@media(prefers-reduced-motion:reduce){
+  #pw-app,#pw-app *{animation:none!important;transition:none!important;}
+}
+</style>
+
+<div id="pw-app">
+  <p class="pw-brand">My Sweet Pilates</p>
+  <div class="pw-hd">
+    <p class="pw-lbl">Tarifs · 2026</p>
+    <h2>Trouve<br><em>ton tarif</em></h2>
+    <p class="pw-sub">Sélectionne tes préférences, étape par étape.</p>
+  </div>
+
+  <!-- Étape 1 : Discipline -->
+  <div class="pw-step" id="pw-s1">
+    <div class="pw-step-hd">
+      <div class="pw-n" id="pw-n1">1</div>
+      <p class="pw-step-ttl">Discipline</p>
+    </div>
+    <div class="pw-pills">
+      <button class="pw-pill" onclick="pwC('disc','Pilates',this)">Pilates</button>
+      <button class="pw-pill" onclick="pwC('disc','Yoga',this)">Yoga</button>
+      <button class="pw-pill" onclick="pwC('disc','Reiki',this)">Reiki</button>
+      <button class="pw-pill" onclick="pwC('disc','Barre',this)">Barre au sol</button>
+    </div>
+  </div>
+
+  <!-- Étape 2 : Nombre de participants -->
+  <div class="pw-step locked" id="pw-s2">
+    <div class="pw-step-hd">
+      <div class="pw-n" id="pw-n2">2</div>
+      <p class="pw-step-ttl">Nombre de participants</p>
+    </div>
+    <div class="pw-pills" id="pw-part-pills"></div>
+  </div>
+
+  <!-- Étape 3 : Type de séance (Pilates uniquement) -->
+  <div class="pw-step locked" id="pw-s3">
+    <div class="pw-step-hd">
+      <div class="pw-n" id="pw-n3">3</div>
+      <p class="pw-step-ttl">Type de séance</p>
+    </div>
+    <div class="pw-pills" id="pw-type-pills"></div>
+    <p class="pw-note" id="pw-typenote"></p>
+  </div>
+
+  <!-- Résultat -->
+  <div id="pw-res"></div>
+
+  <!-- Cours d'essai -->
+  <div class="pw-essai" id="pw-essai">
+    <span class="pw-elbl"><b>Cours d'essai</b><br>Pour découvrir en douceur</span>
+    <span class="pw-epx" id="pw-essai-px">35 €</span>
+  </div>
+</div>
+
+<script>
+(function(){
+var ST={disc:null,part:null,type:null};
+
+/* Étape 2 — nombre de participants proposés par discipline */
+var PARTICIPANTS={
+  Pilates:[{v:'Solo',l:'Solo'},{v:'Duo',l:'Duo'},{v:'Trio',l:'Trio'}],
+  Yoga:[{v:'Solo',l:'Solo'},{v:'Duo',l:'Duo'}],
+  Reiki:[{v:'Solo',l:'Solo'}],
+  Barre:[{v:'Solo',l:'Solo'},{v:'Duo',l:'Duo'}]
+};
+
+/* Étape 3 — types de séance (Pilates uniquement) */
+var TYPES_PILATES=['Machine','Tapis','Mix'];
+var TYPES_PAR_PART={Solo:['Machine','Tapis','Mix'],Duo:['Machine','Tapis','Mix'],Trio:['Tapis']};
+
+var T={
+  /* ── PILATES ── */
+  'P-Machine-Solo':{ti:'Machine',su:'Séance Solo',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'75 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'72 €',t:'720 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'70 €',t:'1 400 € au total',b:1}]},
+  'P-Machine-Duo':{ti:'Machine',su:'Séance Duo · par personne',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'55 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'52 €',t:'520 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'50 €',t:'1 000 € au total',b:1}]},
+  'P-Tapis-Solo':{ti:'Tapis',su:'Séance Solo',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'60 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'58 €',t:'580 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'56 €',t:'1 120 € au total',b:1}]},
+  'P-Tapis-Duo':{ti:'Tapis',su:'Séance Duo · par personne',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'30 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'29 €',t:'290 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'28 €',t:'560 € au total',b:1}]},
+  'P-Tapis-Trio':{ti:'Tapis',su:'Séance Trio · par personne',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'23 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'21 €',t:'210 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'19 €',t:'380 € au total',b:1}]},
+  'P-Mix-Solo':{ti:'Mix',su:'Machine & Tapis · Séance Solo',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'70 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'68 €',t:'680 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'64 €',t:'1 280 € au total',b:1}]},
+  'P-Mix-Duo':{ti:'Mix',su:'Machine & Tapis · Séance Duo · par personne',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'53 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'51 €',t:'510 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'49 €',t:'980 € au total',b:1}]},
+  /* ── YOGA ── */
+  'Y-Solo':{ti:'Yoga',su:'Séance Solo',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'30 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'28 €',t:'280 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'25 €',t:'500 € au total',b:1}]},
+  'Y-Duo':{ti:'Yoga',su:'Séance Duo · par personne',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'20 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'18 €',t:'180 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'15 €',t:'300 € au total',b:1}]},
+  /* ── REIKI ── */
+  'R-Solo':{ti:'Reiki',su:'Séance Solo · environ 1 h 30',r:[
+    {n:'Une séance',d:'Validité 1 mois',p:'50 €',t:null},
+    {n:'Forfait 3 séances',d:'Validité 3 mois',p:'45 €',t:'135 € au total'},
+    {n:'Forfait 10 séances',d:'Validité 12 mois',p:'40 €',t:'400 € au total',b:1}]},
+  /* ── BARRE AU SOL ── */
+  'B-Solo':{ti:'Barre au sol',su:'Séance Solo · tarif horaire',u:'heure',r:[
+    {n:'1 heure',d:'Validité 1 mois',p:'60 €',t:null},
+    {n:'Forfait 10 heures',d:'Validité 3 mois',p:'57 €',t:'570 € au total'},
+    {n:'Forfait 20 heures',d:'Validité 6 mois',p:'55 €',t:'1 100 € au total',b:1}]},
+  'B-Duo':{ti:'Barre au sol',su:'Séance Duo · par personne · tarif horaire',u:'heure',r:[
+    {n:'1 heure',d:'Validité 1 mois',p:'30 €',t:null},
+    {n:'Forfait 10 heures',d:'Validité 3 mois',p:'27 €',t:'270 € au total',b:1},
+    {n:'Forfait 20 heures',d:'Validité 6 mois',p:'33 €',t:'660 € au total'}]}
+};
+
+/* Cours d'essai — pas de tarif défini pour la barre au sol : le bloc est masqué */
+var ESSAI={Pilates:'35 €',Yoga:'12 €',Reiki:'50 €'};
+
+window.pwC=function(field,val,btn){
+  if(field==='disc'){ST={disc:val,part:null,type:null};}
+  else if(field==='part'){ST.part=val;ST.type=null;}
+  else if(field==='type'){ST.type=val;}
+
+  // Deselect siblings
+  var grp=btn.closest('.pw-pills');
+  if(grp) grp.querySelectorAll('.pw-pill').forEach(function(b){b.classList.remove('sel');b.setAttribute('aria-pressed','false');});
+  btn.classList.add('sel');
+  btn.setAttribute('aria-pressed','true');
+  pwUpdate();
+};
+
+function mark(nId,done){
+  var n=document.getElementById(nId);
+  if(done){n.textContent='✓';n.classList.add('done');}
+  else{n.textContent=nId.replace('pw-n','');n.classList.remove('done');}
+}
+
+function pwUpdate(){
+  var s=ST;
+
+  /* Étape 1 faite → on ouvre l'étape 2 et on reconstruit les participants */
+  if(s.disc){
+    mark('pw-n1',true);
+    var s2=document.getElementById('pw-s2');
+    if(s2.classList.contains('locked')){s2.classList.add('reveal');}
+    s2.classList.remove('locked');
+    var pp=document.getElementById('pw-part-pills');
+    pp.innerHTML=PARTICIPANTS[s.disc].map(function(o){
+      return '<button class="pw-pill'+(s.part===o.v?' sel':'')+'" aria-pressed="'+(s.part===o.v)+'" onclick="pwC(\'part\',\''+o.v+'\',this)">'+o.l+'</button>';
+    }).join('');
+    // Cours d'essai : affiché uniquement si un tarif existe pour la discipline
+    var es=document.getElementById('pw-essai');
+    if(ESSAI[s.disc]){es.style.display='';document.getElementById('pw-essai-px').textContent=ESSAI[s.disc];}
+    else{es.style.display='none';}
+    // L'étape « Type de séance » concerne uniquement le Pilates
+    var s3=document.getElementById('pw-s3');
+    if(s.disc!=='Pilates'){s3.classList.add('locked');s3.style.display='none';s2.classList.add('no-rail');}
+    else{s3.style.display='';s2.classList.remove('no-rail');}
+  }
+
+  /* Étape 2 faite */
+  if(s.part){
+    mark('pw-n2',true);
+    if(s.disc==='Pilates'){
+      var s3=document.getElementById('pw-s3');
+      if(s3.classList.contains('locked')){s3.classList.add('reveal');}
+      s3.classList.remove('locked');
+      var dispo=TYPES_PAR_PART[s.part]||TYPES_PILATES;
+      var tp=document.getElementById('pw-type-pills');
+      tp.innerHTML=TYPES_PILATES.filter(function(m){return dispo.indexOf(m)>-1;}).map(function(m){
+        return '<button class="pw-pill'+(s.type===m?' sel':'')+'" aria-pressed="'+(s.type===m)+'" onclick="pwC(\'type\',\''+m+'\',this)">'+m+'</button>';
+      }).join('');
+    }
+  } else {
+    mark('pw-n2',false);
+  }
+
+  /* Étape 3 — précision sur le Mix */
+  var nt=document.getElementById('pw-typenote');
+  if(s.disc==='Pilates'&&s.type==='Mix'){
+    nt.textContent='Le Mix, c’est 50 % de cours machine et 50 % de cours tapis.';
+    nt.classList.add('on');
+  } else {
+    nt.classList.remove('on');
+  }
+
+  /* Étape 3 terminée ? */
+  var d3=(s.disc==='Pilates')&&!!s.type;
+  if(d3) mark('pw-n3',true); else mark('pw-n3',false);
+
+  pwResult();
+}
+
+function pwResult(){
+  var s=ST, el=document.getElementById('pw-res'), key=null;
+  if(s.disc==='Yoga'&&s.part) key='Y-'+s.part;
+  else if(s.disc==='Reiki'&&s.part) key='R-'+s.part;
+  else if(s.disc==='Barre'&&s.part) key='B-'+s.part;
+  else if(s.disc==='Pilates'&&s.part&&s.type) key='P-'+s.type+'-'+s.part;
+  if(!key||!T[key]){el.classList.remove('on');return;}
+  var t=T[key];
+  el.classList.add('on');
+  var unitPx=parseInt(String(t.r[0].p).replace(/[^0-9]/g,''),10);
+  el.innerHTML='<div class="pw-card">'+
+    '<p class="pw-rtag">Votre formule</p>'+
+    '<p class="pw-rttl">'+t.ti+'</p>'+
+    '<p class="pw-rsub">'+t.su+'</p>'+
+    '<div class="pw-rows">'+
+    t.r.map(function(r){
+      var save='';
+      if(r.b){
+        var bp=parseInt(String(r.p).replace(/[^0-9]/g,''),10);
+        if(unitPx&&bp&&bp<unitPx){save='<p class="pw-rsave">−'+(unitPx-bp)+' € / séance vs unité</p>';}
+      }
+      return '<div class="pw-row'+(r.b?' best':'')+'"><div><p class="pw-rname">'+r.n+(r.b?'<span class="pw-best">Meilleur</span>':'')+'</p><p class="pw-rdet">'+r.d+'</p>'+save+'</div>'+
+        '<div><p class="pw-rpx">'+r.p+'</p>'+(r.t?'<p class="pw-rtot">'+r.t+'</p>':'')+'</div></div>';
+    }).join('')+
+    '</div></div>'+
+    '<button class="pw-reset" onclick="pwReset()">↩ Recommencer</button>';
+}
+
+window.pwReset=function(){
+  ST={disc:null,part:null,type:null};
+  document.querySelectorAll('#pw-app .pw-pill').forEach(function(b){b.classList.remove('sel');b.setAttribute('aria-pressed','false');});
+  ['pw-n1','pw-n2','pw-n3'].forEach(function(id,i){mark(id,false);document.getElementById(id).textContent=i+1;});
+  document.getElementById('pw-s2').classList.add('locked');document.getElementById('pw-s2').classList.remove('reveal','no-rail');
+  document.getElementById('pw-s3').classList.add('locked');document.getElementById('pw-s3').classList.remove('reveal');
+  document.getElementById('pw-typenote').classList.remove('on');
+  document.getElementById('pw-res').classList.remove('on');
+  document.getElementById('pw-part-pills').innerHTML='';
+  document.getElementById('pw-type-pills').innerHTML='';
+  document.getElementById('pw-essai').style.display='';
+  document.getElementById('pw-essai-px').textContent='35 €';
+  document.getElementById('pw-s3').style.display='';
+};
+})();
+</script>
+
+</body></html>
