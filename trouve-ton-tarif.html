@@ -300,12 +300,11 @@ var T={
     {n:'Forfait 20 heures',d:'Validité 6 mois',p:'55 €',t:'1 100 € au total',b:1}]},
   'B-Duo':{ti:'Barre au sol',su:'Séance Duo · par personne · tarif horaire',u:'heure',r:[
     {n:'1 heure',d:'Validité 1 mois',p:'30 €',t:null},
-    {n:'Forfait 10 heures',d:'Validité 3 mois',p:'27 €',t:'270 € au total',b:1},
-    {n:'Forfait 20 heures',d:'Validité 6 mois',p:'33 €',t:'660 € au total'}]}
+    {n:'Forfait 10 heures',d:'Validité 3 mois',p:'27 €',t:'270 € au total'},
+    {n:'Forfait 20 heures',d:'Validité 6 mois',p:'25 €',t:'500 € au total',b:1}]}
 };
 
-/* Cours d'essai — pas de tarif défini pour la barre au sol : le bloc est masqué */
-var ESSAI={Pilates:'35 €',Yoga:'12 €',Reiki:'50 €'};
+var ESSAI={Pilates:'35 €',Yoga:'12 €',Reiki:'50 €',Barre:'50 €'};
 
 window.pwC=function(field,val,btn){
   if(field==='disc'){ST={disc:val,part:null,type:null};}
@@ -401,7 +400,7 @@ function pwResult(){
       var save='';
       if(r.b){
         var bp=parseInt(String(r.p).replace(/[^0-9]/g,''),10);
-        if(unitPx&&bp&&bp<unitPx){save='<p class="pw-rsave">−'+(unitPx-bp)+' € / séance vs unité</p>';}
+        if(unitPx&&bp&&bp<unitPx){save='<p class="pw-rsave">−'+(unitPx-bp)+' € / '+(t.u||'séance')+' vs unité</p>';}
       }
       return '<div class="pw-row'+(r.b?' best':'')+'"><div><p class="pw-rname">'+r.n+(r.b?'<span class="pw-best">Meilleur</span>':'')+'</p><p class="pw-rdet">'+r.d+'</p>'+save+'</div>'+
         '<div><p class="pw-rpx">'+r.p+'</p>'+(r.t?'<p class="pw-rtot">'+r.t+'</p>':'')+'</div></div>';
