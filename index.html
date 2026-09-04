@@ -1,220 +1,201 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogiFlow — Tableau de bord</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent:#6366f1; --accent2:#22d3ee; --success:#34d399; --warning:#fbbf24; --danger:#f87171; --bg:#0f0f11; --bg2:#18181b; --bg3:#27272a; --border:#3f3f46; --text:#e8e8ec; --text2:#a1a1aa; --text3:#71717a; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }
+    .grid { display:grid; grid-template-columns:260px 1fr; gap:24px; max-width:1440px; margin:0 auto; padding:24px; }
+    .sidebar { position:sticky; top:24px; height:calc(100vh - 48px); display:flex; flex-direction:column; gap:4px; }
+    .sb-item { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:8px; color:var(--text2); font-size:13px; font-weight:500; cursor:pointer; }
+    .sb-item:hover,.sb-item.active { background:var(--bg3); color:var(--text); }
+    .sb-brand { padding:0 14px 20px; font-size:20px; font-weight:800; color:#fafafa; display:flex; align-items:center; gap:10px; }
+    .sb-bottom { margin-top:auto; padding-top:16px; border-top:1px solid var(--border); }
+    .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:20px; }
+    .kpi { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:20px; position:relative; overflow:hidden; }
+    .kpi::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+    .kpi:nth-child(1)::before { background:var(--accent); }
+    .kpi:nth-child(2)::before { background:var(--accent2); }
+    .kpi:nth-child(3)::before { background:var(--success); }
+    .kpi:nth-child(4)::before { background:var(--warning); }
+    .kpi-label { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
+    .kpi-val { font-size:28px; font-weight:700; color:#fafafa; margin-bottom:4px; }
+    .kpi-delta { font-size:12px; font-weight:600; }
+    .up { color:var(--success); } .down { color:var(--danger); }
+    .card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:20px; }
+    .btn-p { background:linear-gradient(135deg,var(--accent),#8b5cf6); color:white; border:none; padding:10px 20px; border-radius:10px; font-weight:600; font-size:13px; cursor:pointer; }
+    .btn-g { background:transparent; border:1px solid var(--border); color:var(--text2); padding:8px 14px; border-radius:10px; font-size:12px; cursor:pointer; }
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.3px; }
+    .b-live { background:rgba(52,211,153,0.12); color:var(--success); }
+    .b-wait { background:rgba(251,191,36,0.12); color:var(--warning); }
+    .b-done { background:rgba(99,102,241,0.12); color:var(--accent); }
+    .flow { display:flex; gap:0; margin-bottom:24px; }
+    .f-step { flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; position:relative; }
+    .f-step::after { content:''; position:absolute; top:14px; left:50%; width:100%; height:2px; background:var(--border); z-index:0; }
+    .f-step:last-child::after { display:none; }
+    .f-step.done::after { background:var(--success); }
+    .f-circ { width:28px; height:28px; border-radius:50%; border:2px solid var(--border); background:var(--bg2); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--text2); z-index:1; }
+    .f-step.active .f-circ { background:var(--accent); border-color:var(--accent); color:white; }
+    .f-step.done .f-circ { background:var(--success); border-color:var(--success); color:white; }
+    .f-lbl { font-size:11px; color:var(--text3); font-weight:500; }
+    .f-step.active .f-lbl { color:var(--accent); }
+    .form-g { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+    .fg { display:flex; flex-direction:column; gap:6px; }
+    .fg.full { grid-column:1/-1; }
+    .fl { font-size:12px; color:var(--text2); font-weight:500; }
+    .fi { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--text); font-size:13px; outline:none; width:100%; }
+    .fi:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(99,102,241,0.1); }
+    .tracker-map { height:200px; background:linear-gradient(160deg,#1a1a2e,#16213e); border-radius:12px; position:relative; margin-bottom:16px; }
+    .truck { position:absolute; top:45%; left:60%; width:32px; height:32px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; box-shadow:0 0 20px rgba(99,102,241,0.5); animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.5);opacity:0.5;} }
+    .tl { display:flex; flex-direction:column; gap:0; position:relative; padding-left:24px; }
+    .tl::before { content:''; position:absolute; left:7px; top:8px; bottom:8px; width:2px; background:var(--border); }
+    .tl-i { position:relative; padding:10px 0; }
+    .tl-d { position:absolute; left:-21px; top:14px; width:14px; height:14px; border-radius:50%; border:2px solid var(--border); background:var(--bg2); z-index:1; }
+    .tl-i.done .tl-d { background:var(--success); border-color:var(--success); }
+    .tl-i.active .tl-d { background:var(--accent); border-color:var(--accent); animation:pulse 2s infinite; }
+    .tl-t { font-size:11px; color:var(--text3); }
+    .tl-l { font-size:13px; font-weight:600; color:var(--text); }
+    .tl-i.done .tl-l { color:var(--success); }
+    .tl-i.active .tl-l { color:var(--accent); }
+    .map-s { background:var(--bg2); border:1px solid var(--border); border-radius:16px; overflow:hidden; height:320px; position:relative; }
+    .map-bg { width:100%; height:100%; background:linear-gradient(160deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); position:relative; }
+    .map-d { position:absolute; width:12px; height:12px; border-radius:50%; animation:pulse 2s infinite; }
+    @media(max-width:1024px){ .grid{grid-template-columns:1fr;} .sidebar{display:none;} .kpi-row{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:640px){ .kpi-row{grid-template-columns:1fr;} .form-g{grid-template-columns:1fr;} }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="fr"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;LogiFlow — Dashboard&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>:root { --accent:#6366f1; --accent2:#22d3ee; --success:#34d399; --warning:#fbbf24; --danger:#f87171; --bg:#0f0f11; --bg2:#18181b; --bg3:#27272a; --border:#3f3f46; --text:#e8e8ec; --text2:#a1a1aa; --text3:#71717a; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>* { box-sizing:border-box; margin:0; padding:0; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.grid { display:grid; grid-template-columns:260px 1fr; gap:24px; max-width:1440px; margin:0 auto; padding:24px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sidebar { position:sticky; top:24px; height:calc(100vh - 48px); display:flex; flex-direction:column; gap:4px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sb-item { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:8px; color:var(--text2); font-size:13px; font-weight:500; cursor:pointer; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sb-item:hover,.sb-item.active { background:var(--bg3); color:var(--text); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sb-brand { padding:0 14px 20px; font-size:20px; font-weight:800; color:#fafafa; display:flex; align-items:center; gap:10px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sb-bottom { margin-top:auto; padding-top:16px; border-top:1px solid var(--border); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:20px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kpi { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:20px; position:relative; overflow:hidden; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kpi::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kpi:nth-child(1)::before { background:var(--accent); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kpi:nth-child(2)::before { background:var(--accent2); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kpi:nth-child(3)::before { background:var(--success); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kpi:nth-child(4)::before { background:var(--warning); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kpi-label { font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kpi-val { font-size:28px; font-weight:700; color:#fafafa; margin-bottom:4px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.kpi-delta { font-size:12px; font-weight:600; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.up { color:var(--success); } .down { color:var(--danger); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:20px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn-p { background:linear-gradient(135deg,var(--accent),#8b5cf6); color:white; border:none; padding:10px 20px; border-radius:10px; font-weight:600; font-size:13px; cursor:pointer; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn-g { background:transparent; border:1px solid var(--border); color:var(--text2); padding:8px 14px; border-radius:10px; font-size:12px; cursor:pointer; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.3px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.b-live { background:rgba(52,211,153,0.12); color:var(--success); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.b-wait { background:rgba(251,191,36,0.12); color:var(--warning); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.b-done { background:rgba(99,102,241,0.12); color:var(--accent); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.flow { display:flex; gap:0; margin-bottom:24px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.f-step { flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; position:relative; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.f-step::after { content:''; position:absolute; top:14px; left:50%; width:100%; height:2px; background:var(--border); z-index:0; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.f-step:last-child::after { display:none; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.f-step.done::after { background:var(--success); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.f-circ { width:28px; height:28px; border-radius:50%; border:2px solid var(--border); background:var(--bg2); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--text2); z-index:1; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.f-step.active .f-circ { background:var(--accent); border-color:var(--accent); color:white; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.f-step.done .f-circ { background:var(--success); border-color:var(--success); color:white; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.f-lbl { font-size:11px; color:var(--text3); font-weight:500; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.f-step.active .f-lbl { color:var(--accent); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.form-g { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.fg { display:flex; flex-direction:column; gap:6px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.fg.full { grid-column:1/-1; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.fl { font-size:12px; color:var(--text2); font-weight:500; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.fi { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--text); font-size:13px; outline:none; width:100%; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.fi:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(99,102,241,0.1); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tracker-map { height:200px; background:linear-gradient(160deg,#1a1a2e,#16213e); border-radius:12px; position:relative; margin-bottom:16px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.truck { position:absolute; top:45%; left:60%; width:32px; height:32px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; box-shadow:0 0 20px rgba(99,102,241,0.5); animation:pulse 2s infinite; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.5);opacity:0.5;} }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tl { display:flex; flex-direction:column; gap:0; position:relative; padding-left:24px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tl::before { content:''; position:absolute; left:7px; top:8px; bottom:8px; width:2px; background:var(--border); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tl-i { position:relative; padding:10px 0; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tl-d { position:absolute; left:-21px; top:14px; width:14px; height:14px; border-radius:50%; border:2px solid var(--border); background:var(--bg2); z-index:1; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tl-i.done .tl-d { background:var(--success); border-color:var(--success); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tl-i.active .tl-d { background:var(--accent); border-color:var(--accent); animation:pulse 2s infinite; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tl-t { font-size:11px; color:var(--text3); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tl-l { font-size:13px; font-weight:600; color:var(--text); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tl-i.done .tl-l { color:var(--success); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tl-i.active .tl-l { color:var(--accent); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.map-s { background:var(--bg2); border:1px solid var(--border); border-radius:16px; overflow:hidden; height:320px; position:relative; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.map-bg { width:100%; height:100%; background:linear-gradient(160deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); position:relative; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.map-d { position:absolute; width:12px; height:12px; border-radius:50%; animation:pulse 2s infinite; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media(max-width:1024px){ .grid{grid-template-columns:1fr;} .sidebar{display:none;} .kpi-row{grid-template-columns:repeat(2,1fr);} }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media(max-width:640px){ .kpi-row{grid-template-columns:1fr;} .form-g{grid-template-columns:1fr;} }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="grid"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;nav class="sidebar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="sb-brand"&gt;🚛 LogiFlow&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="sb-item active"&gt;📊 Dashboard&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="sb-item"&gt;➕ Nouvelle mission&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="sb-item"&gt;📋 Mes missions&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="sb-item"&gt;🗺️ Suivi live&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="sb-item"&gt;💬 Messagerie &lt;span style="margin-left:auto;background:var(--danger);color:white;font-size:10px;padding:2px 6px;border-radius:10px;"&gt;3&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="sb-item"&gt;👥 Convoyeurs&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="sb-item"&gt;📈 Analytics&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="sb-bottom"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sb-item"&gt;⚙️ Paramètres&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sb-item"&gt;🚪 Déconnexion&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/nav&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div style="display:flex;flex-direction:column;gap:20px;"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- KPIs --&gt;</p>
-<p class="p1">&lt;div class="kpi-row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="kpi"&gt;&lt;div class="kpi-label"&gt;Missions actives&lt;/div&gt;&lt;div class="kpi-val"&gt;24&lt;/div&gt;&lt;div class="kpi-delta up"&gt;↑ 12% vs hier&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="kpi"&gt;&lt;div class="kpi-label"&gt;En cours de livraison&lt;/div&gt;&lt;div class="kpi-val"&gt;18&lt;/div&gt;&lt;div class="kpi-delta up"&gt;↑ 5% vs hier&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="kpi"&gt;&lt;div class="kpi-label"&gt;Taux de complétion&lt;/div&gt;&lt;div class="kpi-val"&gt;97.2%&lt;/div&gt;&lt;div class="kpi-delta up"&gt;↑ 0.8% ce mois&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="kpi"&gt;&lt;div class="kpi-label"&gt;Coûts en cours&lt;/div&gt;&lt;div class="kpi-val"&gt;8 420 €&lt;/div&gt;&lt;div class="kpi-delta down"&gt;↓ 3% budget&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- Map + Prioritaires --&gt;</p>
-<p class="p1">&lt;div style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="map-s"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="map-bg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="map-d" style="top:30%;left:25%;background:var(--accent);animation-delay:0s;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="map-d" style="top:45%;left:55%;background:var(--success);animation-delay:0.3s;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="map-d" style="top:60%;left:40%;background:var(--warning);animation-delay:0.6s;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="map-d" style="top:35%;left:70%;background:var(--accent2);animation-delay:0.9s;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="position:absolute;bottom:16px;left:16px;right:16px;display:flex;gap:8px;flex-wrap:wrap;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="background:rgba(15,15,17,0.9);backdrop-filter:blur(8px);border:1px solid var(--border);padding:6px 12px;border-radius:8px;font-size:11px;color:var(--text2);"&gt;Toutes&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="background:rgba(15,15,17,0.9);backdrop-filter:blur(8px);border:1px solid var(--border);padding:6px 12px;border-radius:8px;font-size:11px;color:var(--text2);"&gt;En route&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="background:rgba(15,15,17,0.9);backdrop-filter:blur(8px);border:1px solid var(--border);padding:6px 12px;border-radius:8px;font-size:11px;color:var(--text2);"&gt;Retard&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="position:absolute;top:12px;left:12px;background:rgba(15,15,17,0.9);backdrop-filter:blur(8px);padding:8px 14px;border-radius:10px;border:1px solid var(--border);"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="font-size:11px;color:var(--text3);"&gt;Mise à jour&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="font-size:13px;font-weight:600;color:var(--success);display:flex;align-items:center;gap:4px;"&gt;&lt;span style="width:6px;height:6px;background:var(--success);border-radius:50%;animation:pulse 2s infinite;"&gt;&lt;/span&gt; Live&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="card" style="display:flex;flex-direction:column;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;h3 style="font-size:15px;font-weight:700;"&gt;Missions prioritaires&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-g"&gt;Voir tout →&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="display:flex;flex-direction:column;gap:12px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg3);border-radius:12px;border-left:3px solid var(--danger);"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="width:36px;height:36px;background:rgba(248,113,113,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;"&gt;⚠️&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="flex:1;"&gt;&lt;div style="font-size:13px;font-weight:600;"&gt;#MIS-2847 — Retard +45min&lt;/div&gt;&lt;div style="font-size:11px;color:var(--text3);margin-top:2px;"&gt;Paris → Lyon | Camion frigorifique&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="badge b-wait"&gt;Alerte&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg3);border-radius:12px;border-left:3px solid var(--accent);"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="width:36px;height:36px;background:rgba(99,102,241,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;"&gt;🚚&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="flex:1;"&gt;&lt;div style="font-size:13px;font-weight:600;"&gt;#MIS-2848 — En route&lt;/div&gt;&lt;div style="font-size:11px;color:var(--text3);margin-top:2px;"&gt;Marseille → Toulouse | PL&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="badge b-live"&gt;Live&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg3);border-radius:12px;border-left:3px solid var(--success);"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="width:36px;height:36px;background:rgba(52,211,153,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;"&gt;✅&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div style="flex:1;"&gt;&lt;div style="font-size:13px;font-weight:600;"&gt;#MIS-2845 — Livrée&lt;/div&gt;&lt;div style="font-size:11px;color:var(--text3);margin-top:2px;"&gt;Bordeaux → Nantes | Fourgon&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="badge b-done"&gt;Terminée&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- Création --&gt;</p>
-<p class="p1">&lt;div class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h3 style="font-size:15px;font-weight:700;"&gt;Créer une nouvelle mission&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span style="font-size:12px;color:var(--text3);"&gt;Étape 2 sur 4&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="flow"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="f-step done"&gt;&lt;div class="f-circ"&gt;✓&lt;/div&gt;&lt;div class="f-lbl"&gt;Définition&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="f-step active"&gt;&lt;div class="f-circ"&gt;2&lt;/div&gt;&lt;div class="f-lbl"&gt;Itinéraire&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="f-step"&gt;&lt;div class="f-circ"&gt;3&lt;/div&gt;&lt;div class="f-lbl"&gt;Budget&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="f-step"&gt;&lt;div class="f-circ"&gt;4&lt;/div&gt;&lt;div class="f-lbl"&gt;Publier&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="form-g"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;label class="fl"&gt;Point de départ&lt;/label&gt;&lt;input class="fi" value="Entrepôt Paris Nord, 93300"/&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;label class="fl"&gt;Destination&lt;/label&gt;&lt;input class="fi" placeholder="Saisir une adresse..."/&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;label class="fl"&gt;Distance estimée&lt;/label&gt;&lt;input class="fi" value="—" readonly style="color:var(--text3);"/&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;label class="fl"&gt;Temps estimé&lt;/label&gt;&lt;input class="fi" value="—" readonly style="color:var(--text3);"/&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg full"&gt;&lt;label class="fl"&gt;Étapes intermédiaires (optionnel)&lt;/label&gt;&lt;input class="fi" placeholder="Ajouter une étape..."/&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn-g"&gt;← Retour&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn-p"&gt;Continuer →&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- Tracking --&gt;</p>
-<p class="p1">&lt;div class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;h3 style="font-size:15px;font-weight:700;"&gt;Suivi en temps réel — #MIS-2848&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="font-size:12px;color:var(--text3);margin-top:2px;"&gt;Marseille → Toulouse | Ahmed K. — PL Renault&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="display:flex;gap:8px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-g"&gt;💬 Message&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-g"&gt;📞 Appeler&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="tracker-map"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="truck"&gt;🚛&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="position:absolute;top:20%;left:20%;width:10px;height:10px;background:var(--success);border-radius:50%;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="position:absolute;top:70%;left:80%;width:10px;height:10px;background:var(--accent2);border-radius:50%;"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="position:absolute;bottom:12px;left:12px;background:rgba(15,15,17,0.9);padding:8px 14px;border-radius:10px;border:1px solid var(--border);"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="font-size:11px;color:var(--text3);"&gt;Arrivée estimée&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="font-size:16px;font-weight:700;color:var(--accent2);"&gt;14:32 &lt;span style="font-size:11px;font-weight:400;color:var(--text3);"&gt;(+8min)&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="tl"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tl-i done"&gt;&lt;div class="tl-d"&gt;&lt;/div&gt;&lt;div class="tl-t"&gt;08:15&lt;/div&gt;&lt;div class="tl-l"&gt;Chargement terminé — Marseille&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tl-i done"&gt;&lt;div class="tl-d"&gt;&lt;/div&gt;&lt;div class="tl-t"&gt;08:42&lt;/div&gt;&lt;div class="tl-l"&gt;Départ confirmé&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tl-i active"&gt;&lt;div class="tl-d"&gt;&lt;/div&gt;&lt;div class="tl-t"&gt;En cours&lt;/div&gt;&lt;div class="tl-l"&gt;En route — A9, km 187&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tl-i"&gt;&lt;div class="tl-d"&gt;&lt;/div&gt;&lt;div class="tl-t"&gt;14:32&lt;/div&gt;&lt;div class="tl-l"&gt;Arrivée estimée — Toulouse&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+<div class="grid">
+
+  <nav class="sidebar">
+    <div class="sb-brand">🚛 LogiFlow</div>
+    <div class="sb-item active">📊 Tableau de bord</div>
+    <div class="sb-item">➕ Nouvelle mission</div>
+    <div class="sb-item">📋 Mes missions</div>
+    <div class="sb-item">🗺️ Suivi en direct</div>
+    <div class="sb-item">💬 Messagerie <span style="margin-left:auto;background:var(--danger);color:white;font-size:10px;padding:2px 6px;border-radius:10px;">3</span></div>
+    <div class="sb-item">👥 Convoyeurs</div>
+    <div class="sb-item">📈 Analytics</div>
+    <div class="sb-bottom">
+      <div class="sb-item">⚙️ Paramètres</div>
+      <div class="sb-item">🚪 Déconnexion</div>
+    </div>
+  </nav>
+
+  <div style="display:flex;flex-direction:column;gap:20px;">
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-label">Missions actives</div><div class="kpi-val">24</div><div class="kpi-delta up">↑ 12% vs hier</div></div>
+      <div class="kpi"><div class="kpi-label">En cours de livraison</div><div class="kpi-val">18</div><div class="kpi-delta up">↑ 5% vs hier</div></div>
+      <div class="kpi"><div class="kpi-label">Taux de complétion</div><div class="kpi-val">97.2%</div><div class="kpi-delta up">↑ 0.8% ce mois</div></div>
+      <div class="kpi"><div class="kpi-label">Coûts en cours</div><div class="kpi-val">8 420 €</div><div class="kpi-delta down">↓ 3% budget</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px;">
+      <div class="map-s">
+        <div class="map-bg">
+          <div class="map-d" style="top:30%;left:25%;background:var(--accent);animation-delay:0s;"></div>
+          <div class="map-d" style="top:45%;left:55%;background:var(--success);animation-delay:0.3s;"></div>
+          <div class="map-d" style="top:60%;left:40%;background:var(--warning);animation-delay:0.6s;"></div>
+          <div class="map-d" style="top:35%;left:70%;background:var(--accent2);animation-delay:0.9s;"></div>
+        </div>
+        <div style="position:absolute;bottom:16px;left:16px;right:16px;display:flex;gap:8px;flex-wrap:wrap;">
+          <div style="background:rgba(15,15,17,0.9);backdrop-filter:blur(8px);border:1px solid var(--border);padding:6px 12px;border-radius:8px;font-size:11px;color:var(--text2);">Toutes</div>
+          <div style="background:rgba(15,15,17,0.9);backdrop-filter:blur(8px);border:1px solid var(--border);padding:6px 12px;border-radius:8px;font-size:11px;color:var(--text2);">En route</div>
+          <div style="background:rgba(15,15,17,0.9);backdrop-filter:blur(8px);border:1px solid var(--border);padding:6px 12px;border-radius:8px;font-size:11px;color:var(--text2);">Retard</div>
+        </div>
+        <div style="position:absolute;top:12px;left:12px;background:rgba(15,15,17,0.9);backdrop-filter:blur(8px);padding:8px 14px;border-radius:10px;border:1px solid var(--border);">
+          <div style="font-size:11px;color:var(--text3);">Mise à jour</div>
+          <div style="font-size:13px;font-weight:600;color:var(--success);display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;background:var(--success);border-radius:50%;animation:pulse 2s infinite;"></span> Live</div>
+        </div>
+      </div>
+
+      <div class="card" style="display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <h3 style="font-size:15px;font-weight:700;">Missions prioritaires</h3>
+          <button class="btn-g">Voir tout →</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg3);border-radius:12px;border-left:3px solid var(--danger);">
+            <div style="width:36px;height:36px;background:rgba(248,113,113,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;">⚠️</div>
+            <div style="flex:1;"><div style="font-size:13px;font-weight:600;">#MIS-2847 — Retard +45min</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Paris → Lyon | Camion frigorifique</div></div>
+            <span class="badge b-wait">Alerte</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg3);border-radius:12px;border-left:3px solid var(--accent);">
+            <div style="width:36px;height:36px;background:rgba(99,102,241,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;">🚚</div>
+            <div style="flex:1;"><div style="font-size:13px;font-weight:600;">#MIS-2848 — En route</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Marseille → Toulouse | PL</div></div>
+            <span class="badge b-live">Live</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg3);border-radius:12px;border-left:3px solid var(--success);">
+            <div style="width:36px;height:36px;background:rgba(52,211,153,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;">✅</div>
+            <div style="flex:1;"><div style="font-size:13px;font-weight:600;">#MIS-2845 — Livrée</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Bordeaux → Nantes | Fourgon</div></div>
+            <span class="badge b-done">Terminée</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h3 style="font-size:15px;font-weight:700;">Créer une nouvelle mission</h3>
+        <span style="font-size:12px;color:var(--text3);">Étape 2 sur 4</span>
+      </div>
+      <div class="flow">
+        <div class="f-step done"><div class="f-circ">✓</div><div class="f-lbl">Définition</div></div>
+        <div class="f-step active"><div class="f-circ">2</div><div class="f-lbl">Itinéraire</div></div>
+        <div class="f-step"><div class="f-circ">3</div><div class="f-lbl">Budget</div></div>
+        <div class="f-step"><div class="f-circ">4</div><div class="f-lbl">Éditeur</div></div>
+      </div>
+      <div class="form-g">
+        <div class="fg"><label class="fl">Point de départ</label><input class="fi" value="Entrepôt Paris Nord, 93300"/></div>
+        <div class="fg"><label class="fl">Destination</label><input class="fi" placeholder="Saisir une adresse..."/></div>
+        <div class="fg"><label class="fl">Distance estimée</label><input class="fi" value="—" readonly style="color:var(--text3);"/></div>
+        <div class="fg"><label class="fl">Températures estimées</label><input class="fi" value="—" readonly style="color:var(--text3);"/></div>
+        <div class="fg full"><label class="fl">Étapes intermédiaires (optionnel)</label><input class="fi" placeholder="Ajouter une étape..."/></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;">
+        <button class="btn-g">← Retour</button>
+        <button class="btn-p">Continuer →</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div>
+          <h3 style="font-size:15px;font-weight:700;">Suivi en temps réel — #MIS-2848</h3>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px;">Marseille → Toulouse | Ahmed K. — PL Renault</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-g">💬 Message</button>
+          <button class="btn-g">📞 Appeler</button>
+        </div>
+      </div>
+      <div class="tracker-map">
+        <div class="truck">🚛</div>
+        <div style="position:absolute;top:20%;left:20%;width:10px;height:10px;background:var(--success);border-radius:50%;"></div>
+        <div style="position:absolute;top:70%;left:80%;width:10px;height:10px;background:var(--accent2);border-radius:50%;"></div>
+        <div style="position:absolute;bottom:12px;left:12px;background:rgba(15,15,17,0.9);padding:8px 14px;border-radius:10px;border:1px solid var(--border);">
+          <div style="font-size:11px;color:var(--text3);">Arrivée estimée</div>
+          <div style="font-size:16px;font-weight:700;color:var(--accent2);">14:32 <span style="font-size:11px;font-weight:400;color:var(--text3);">(+8min)</span></div>
+        </div>
+      </div>
+      <div class="tl">
+        <div class="tl-i done"><div class="tl-d"></div><div class="tl-t">08:15</div><div class="tl-l">Chargement terminé — Marseille</div></div>
+        <div class="tl-i done"><div class="tl-d"></div><div class="tl-t">08:42</div><div class="tl-l">Départ confirmé</div></div>
+        <div class="tl-i active"><div class="tl-d"></div><div class="tl-t">En cours</div><div class="tl-l">En route — A9, km 187</div></div>
+        <div class="tl-i"><div class="tl-d"></div><div class="tl-t">14:32</div><div class="tl-l">Arrivée estimée — Toulouse</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 </body>
 </html>

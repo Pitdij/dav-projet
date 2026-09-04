@@ -1,0 +1,13 @@
+{
+  "name": "LogiFlow Convoyeur",
+  "short_name": "LogiFlow",
+  "start_url": "/mobile.html",
+  "display": "standalone",
+  "background_color": "#F5F0E8",
+  "theme_color": "#F5F0E8",
+  "lang": "fr",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

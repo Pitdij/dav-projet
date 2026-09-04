@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  body{margin:0;}
+  @keyframes lfToastIn{from{opacity:0;transform:translate(-50%,10px);}to{opacity:1;transform:translate(-50%,0);}}
+</style>
+</helmet>
+<div style="--cream:#F5F0E8;--cream2:#FFFCF7;--espresso:#1A1714;--camel:#C4956A;--camel-soft:#E8D5BE;--taupe:#6B5B4E;--mist:#9B8E84;--line:rgba(107,91,78,0.16);--sage:#7C9473;--sage-soft:#E4EADF;--terracotta:#C1694F;--terracotta-soft:#F3DFD7;--serif:Georgia,'Times New Roman',serif;--sans:'Helvetica Neue',Helvetica,Arial,sans-serif;min-height:100vh;width:100%;box-sizing:border-box;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;font-family:var(--sans);background:var(--cream);background-image:radial-gradient(circle at 18% 0%,rgba(196,149,106,0.14),transparent 55%);">
+
+<div style="width:375px;height:812px;background:var(--cream2);border:10px solid var(--espresso);border-radius:48px;overflow:hidden;position:relative;box-shadow:0 30px 70px -22px rgba(26,23,20,0.4);flex-shrink:0;">
+
+  <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:26px;background:var(--espresso);border-radius:0 0 16px 16px;z-index:400;"></div>
+
+  <div style="width:100%;height:100%;overflow-y:auto;position:relative;">
+
+    <sc-if value="{{ isOnboarding }}" hint-placeholder-val="{{ true }}">
+    <div style="height:812px;padding:56px 28px 40px;display:flex;flex-direction:column;box-sizing:border-box;">
+      <div style="text-align:right;">
+        <button onClick="{{ onbSkip }}" style="background:none;border:none;font-family:var(--sans);font-size:12px;color:var(--mist);cursor:pointer;padding:6px;">{{ t.skip }}</button>
+      </div>
+      <div style="flex:1;overflow:hidden;position:relative;margin-top:20px;" onPointerDown="{{ onbDown }}" onPointerMove="{{ onbMove }}" onPointerUp="{{ onbUp }}" onPointerLeave="{{ onbUp }}">
+        <div style="display:flex;width:300%;height:100%;transition:transform .35s cubic-bezier(.22,.61,.36,1);transform:{{ onbTrackStyle }};">
+          <sc-for list="{{ onbSlides }}" as="item" hint-placeholder-count="3">
+          <div style="width:33.333%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 6px;">
+            <div style="width:180px;height:180px;border-radius:28px;background:var(--camel-soft);display:flex;align-items:center;justify-content:center;margin-bottom:28px;color:var(--espresso);">
+              <sc-if value="{{ item.iconTarget }}" hint-placeholder-val="{{ false }}">
+                <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="4"></circle><circle cx="12" cy="12" r=".6" fill="currentColor"></circle></svg>
+              </sc-if>
+              <sc-if value="{{ item.iconPin }}" hint-placeholder-val="{{ false }}">
+                <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-7.4 7-12a7 7 0 1 0-14 0c0 4.6 7 12 7 12Z"></path><circle cx="12" cy="9" r="2.3"></circle></svg>
+              </sc-if>
+              <sc-if value="{{ item.iconWallet }}" hint-placeholder-val="{{ false }}">
+                <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h15a3 3 0 0 1 3 3v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path><path d="M3 7l2-3h12"></path><circle cx="16.5" cy="14" r="1.3" fill="currentColor" stroke="none"></circle></svg>
+              </sc-if>
+            </div>
+            <h2 style="font-family:var(--serif);font-size:26px;font-weight:400;color:var(--espresso);margin:0 0 10px;letter-spacing:-.01em;">{{ item.title }}</h2>
+            <p style="font-size:13.5px;color:var(--taupe);line-height:1.55;margin:0;max-width:270px;">{{ item.desc }}</p>
+          </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;justify-content:center;margin:24px 0;">
+        <sc-for list="{{ onbSlides }}" as="item" hint-placeholder-count="3">
+        <div onClick="{{ item.onGoto }}" style="width:{{ item.dotWidth }};height:8px;border-radius:4px;background:{{ item.dotBg }};cursor:pointer;transition:width .3s;"></div>
+        </sc-for>
+      </div>
+      <button onClick="{{ onbNext }}" style="width:100%;background:var(--espresso);color:var(--cream);border:none;padding:16px;border-radius:14px;font-size:15px;font-weight:600;font-family:var(--sans);cursor:pointer;">{{ onbBtnLabel }}</button>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isAppScreen }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:44px 0 24px;box-sizing:border-box;min-height:812px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 20px 18px;">
+        <button onClick="{{ toggleDrawer }}" style="width:36px;height:36px;border-radius:50%;background:var(--camel-soft);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--espresso);padding:0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+        </button>
+        <h2 style="font-family:var(--serif);font-size:20px;font-weight:400;color:var(--espresso);margin:0;">{{ screenTitle }}</h2>
+        <div style="position:relative;width:36px;height:36px;background:var(--camel-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--espresso);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a5 5 0 0 0-5 5v3.2c0 .8-.3 1.6-.9 2.2L5 15h14l-1.1-1.6c-.6-.6-.9-1.4-.9-2.2V8a5 5 0 0 0-5-5Z"></path><path d="M10 18a2 2 0 0 0 4 0"></path></svg>
+          <span style="position:absolute;top:-3px;right:-3px;width:16px;height:16px;background:var(--terracotta);color:#fff;font-size:9px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;">2</span>
+        </div>
+      </div>
+
+      <sc-if value="{{ isMissions }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <p style="padding:0 20px 14px;font-size:12.5px;color:var(--mist);margin:0;">{{ missionsCount }} {{ t.missionsAvailable }}</p>
+        <sc-for list="{{ missions }}" as="item" hint-placeholder-count="4">
+        <div style="position:relative;margin:0 16px 12px;">
+          <div style="position:absolute;inset:0;border-radius:18px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:var(--cream);box-sizing:border-box;">
+            <span style="font-size:12px;font-weight:700;color:var(--terracotta);opacity:{{ item.leftHintOpacity }};">&#10005; {{ t.decline }}</span>
+            <span style="font-size:12px;font-weight:700;color:var(--sage);opacity:{{ item.rightHintOpacity }};">{{ t.accept }} &#10003;</span>
+          </div>
+          <div onPointerDown="{{ item.onDown }}" onPointerMove="{{ item.onMove }}" onPointerUp="{{ item.onUp }}" onPointerLeave="{{ item.onUp }}" style="position:relative;background:var(--cream2);border:0.5px solid var(--line);border-radius:18px;padding:14px;display:flex;gap:12px;box-shadow:0 6px 18px -12px rgba(26,23,20,0.35);touch-action:pan-y;transform:{{ item.dragTransform }};cursor:grab;">
+            <div style="width:48px;height:48px;border-radius:12px;background:var(--camel-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--espresso);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4Z"></path><path d="M3 8v8l9 4 9-4V8"></path><path d="M12 12v8"></path></svg>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+                <h4 style="font-size:14.5px;font-weight:600;color:var(--espresso);margin:0;">{{ item.from }} &rarr; {{ item.to }}</h4>
+                <span style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:3px 9px;border-radius:20px;background:{{ item.tagBg }};color:{{ item.tagColor }};white-space:nowrap;">{{ item.tag }}</span>
+              </div>
+              <p style="font-size:12px;color:var(--taupe);margin:5px 0 7px;">{{ item.date }} {{ item.time }} &middot; {{ item.distance }} &middot; {{ item.vehicle }}</p>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-family:var(--serif);font-size:18px;font-weight:500;color:var(--espresso);">{{ item.price }}</span>
+                <button onClick="{{ item.onInfo }}" style="background:none;border:none;color:var(--camel);cursor:pointer;padding:4px;display:flex;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </sc-for>
+        <sc-if value="{{ missionsEmpty }}" hint-placeholder-val="{{ false }}">
+        <p style="text-align:center;color:var(--mist);font-size:13px;padding:40px 20px;">{{ t.noMissions }}</p>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isPlanning }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:0 4px;">
+        <sc-for list="{{ planningGroups }}" as="grp" hint-placeholder-count="3">
+        <div style="margin-bottom:18px;">
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--camel);font-weight:600;padding:0 20px 10px;">{{ grp.label }}</div>
+          <sc-for list="{{ grp.items }}" as="item" hint-placeholder-count="2">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:0.5px solid var(--line);">
+            <div style="width:40px;height:40px;border-radius:10px;background:var(--camel-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--espresso);font-family:var(--serif);font-size:13px;">{{ item.time }}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13.5px;font-weight:600;color:var(--espresso);">{{ item.from }} &rarr; {{ item.to }}</div>
+              <div style="font-size:11.5px;color:var(--mist);margin-top:2px;">{{ item.distance }} &middot; {{ item.vehicle }}</div>
+            </div>
+            <span style="font-family:var(--serif);font-size:15px;color:var(--espresso);">{{ item.price }}</span>
+          </div>
+          </sc-for>
+        </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isRevenus }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="margin:0 16px 16px;background:var(--espresso);border-radius:20px;padding:22px 22px 18px;color:var(--cream);position:relative;overflow:hidden;">
+          <div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(196,149,106,0.28),transparent 70%);"></div>
+          <div style="position:relative;">
+            <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--camel);margin-bottom:6px;">{{ t.thisWeek }}</div>
+            <div style="font-family:var(--serif);font-size:34px;font-weight:500;">2 840 &euro;</div>
+            <div style="font-size:12.5px;color:rgba(245,240,232,0.55);margin-top:4px;">{{ t.vsLastWeek }}</div>
+            <div style="height:4px;background:rgba(255,255,255,0.12);border-radius:2px;margin-top:16px;overflow:hidden;">
+              <div style="height:100%;width:78%;background:var(--camel);border-radius:2px;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(245,240,232,0.5);margin-top:6px;">
+              <span>{{ t.monthlyGoal }}</span><span>78%</span>
+            </div>
+          </div>
+        </div>
+        <div style="padding:0 20px 10px;font-size:13.5px;font-weight:600;color:var(--espresso);">{{ t.weeklyTrend }}</div>
+        <div style="margin:0 16px 18px;background:var(--cream2);border:0.5px solid var(--line);border-radius:16px;padding:16px;">
+          <div style="height:110px;display:flex;align-items:flex-end;gap:8px;">
+            <sc-for list="{{ earningsBars }}" as="b" hint-placeholder-count="7">
+            <div style="flex:1;height:{{ b.h }}%;background:var(--camel);border-radius:4px 4px 0 0;opacity:.75;"></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:8px;">
+            <sc-for list="{{ earningsBars }}" as="b" hint-placeholder-count="7">
+            <span style="font-size:10px;color:var(--mist);flex:1;text-align:center;">{{ b.day }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:0 20px 10px;font-size:13.5px;font-weight:600;color:var(--espresso);">{{ t.recentMissions }}</div>
+        <sc-for list="{{ recentEarnings }}" as="r" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin:0 16px 8px;background:var(--cream2);border:0.5px solid var(--line);border-radius:14px;padding:12px 14px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:34px;height:34px;border-radius:10px;background:var(--sage-soft);display:flex;align-items:center;justify-content:center;color:var(--sage);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--espresso);">{{ r.route }}</div>
+              <div style="font-size:11px;color:var(--mist);">{{ r.date }}</div>
+            </div>
+          </div>
+          <span style="font-size:14px;font-weight:700;color:var(--sage);">{{ r.amount }}</span>
+        </div>
+        </sc-for>
+        <button onClick="{{ openPayout }}" style="width:calc(100% - 32px);margin:12px 16px 0;background:var(--camel-soft);color:var(--espresso);border:none;padding:15px;border-radius:14px;font-size:14px;font-weight:600;font-family:var(--sans);cursor:pointer;">{{ t.requestPayout }}</button>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isProfil }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="display:flex;align-items:center;gap:14px;padding:0 20px 18px;">
+          <div style="width:56px;height:56px;border-radius:50%;background:var(--espresso);color:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;">AK</div>
+          <div>
+            <div style="font-size:16px;font-weight:600;color:var(--espresso);">Ahmed K.</div>
+            <div style="font-size:12px;color:var(--mist);">{{ t.driverRole }}</div>
+          </div>
+        </div>
+        <div style="padding:0 20px 10px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--camel);font-weight:600;">{{ t.documents }}</div>
+        <sc-for list="{{ docsList }}" as="d" hint-placeholder-count="4">
+        <div onClick="{{ d.onTap }}" style="display:flex;align-items:center;gap:12px;margin:0 16px 8px;padding:12px 14px;background:var(--cream2);border:0.5px solid var(--line);border-radius:14px;cursor:pointer;">
+          <div style="width:36px;height:36px;border-radius:10px;background:{{ d.iconBg }};color:{{ d.iconColor }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <sc-if value="{{ d.isDone }}" hint-placeholder-val="{{ false }}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+            </sc-if>
+            <sc-if value="{{ d.isPending }}" hint-placeholder-val="{{ false }}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4V8Z"></path><circle cx="12" cy="13" r="3.2"></circle></svg>
+            </sc-if>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:600;color:var(--espresso);">{{ d.label }}</div>
+            <div style="font-size:11px;color:var(--mist);margin-top:1px;">{{ d.sub }}</div>
+          </div>
+        </div>
+        </sc-for>
+        <div style="padding:16px 20px 10px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--camel);font-weight:600;">{{ t.account }}</div>
+        <div onClick="{{ toggleLanguage }}" style="display:flex;align-items:center;gap:12px;margin:0 16px 8px;padding:12px 14px;background:var(--cream2);border:0.5px solid var(--line);border-radius:14px;cursor:pointer;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--espresso)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.5 3.5 6 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-6-3.5-9s1-6.5 3.5-9Z"></path></svg>
+          <span style="flex:1;font-size:13px;font-weight:600;color:var(--espresso);">{{ t.interfaceLanguage }}</span>
+          <span style="font-size:12.5px;color:var(--mist);">{{ currentLanguage }}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mist)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+        </div>
+        <div onClick="{{ logout }}" style="display:flex;align-items:center;gap:12px;margin:0 16px;padding:12px 14px;background:var(--cream2);border:0.5px solid var(--line);border-radius:14px;cursor:pointer;color:var(--terracotta);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"></path><path d="M15 8l4 4-4 4"></path><path d="M19 12H9"></path></svg>
+          <span style="font-size:13px;font-weight:600;">{{ t.logout }}</span>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isExecution }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:44px 0 30px;box-sizing:border-box;min-height:812px;">
+      <div style="display:flex;align-items:center;padding:8px 20px 18px;">
+        <button onClick="{{ closeExecution }}" style="background:none;border:none;color:var(--espresso);cursor:pointer;padding:4px;display:flex;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+        </button>
+        <div style="flex:1;text-align:center;">
+          <div style="font-family:var(--serif);font-size:16px;color:var(--espresso);">{{ execTitle }}</div>
+          <div style="font-size:11.5px;color:var(--mist);">{{ execSub }}</div>
+        </div>
+        <div style="width:20px;"></div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;padding:0 24px;margin-bottom:22px;position:relative;">
+        <div style="position:absolute;top:13px;left:44px;right:44px;height:2px;background:var(--line);z-index:0;"></div>
+        <sc-for list="{{ execStepsDisplay }}" as="st" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1;">
+          <div style="width:26px;height:26px;border-radius:50%;background:{{ st.circleBg }};border:2px solid {{ st.circleBorder }};color:{{ st.circleColor }};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">{{ st.mark }}</div>
+          <div style="font-size:9.5px;color:{{ st.labelColor }};font-weight:500;">{{ st.label }}</div>
+        </div>
+        </sc-for>
+      </div>
+
+      <div style="margin:0 16px 12px;background:var(--cream2);border:0.5px solid var(--line);border-radius:16px;padding:14px;">
+        <div style="font-size:11px;color:var(--mist);margin-bottom:6px;">{{ t.shipperInstructions }}</div>
+        <div style="font-size:12.5px;color:var(--espresso);line-height:1.5;">{{ execInstructions }}</div>
+      </div>
+
+      <div style="margin:0 16px 12px;background:var(--cream2);border:0.5px solid var(--line);border-radius:16px;padding:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:600;color:var(--espresso);">{{ t.route }}</div>
+          <div style="font-size:11.5px;color:var(--camel);">{{ execDistance }}</div>
+        </div>
+        <div style="height:120px;border-radius:12px;position:relative;background:var(--camel-soft);overflow:hidden;">
+          <svg viewBox="0 0 300 120" width="100%" height="100%" style="position:absolute;inset:0;">
+            <path d="M20 95 C 90 30, 160 110, 280 25" stroke="var(--camel)" stroke-width="2.5" fill="none" stroke-dasharray="1 8" stroke-linecap="round"></path>
+            <circle cx="20" cy="95" r="5" fill="var(--sage)"></circle>
+            <circle cx="280" cy="25" r="5" fill="var(--terracotta)"></circle>
+          </svg>
+          <div style="position:absolute;top:45%;left:52%;width:26px;height:26px;background:var(--espresso);border-radius:50%;display:flex;align-items:center;justify-content:center;transform:translate(-50%,-50%);color:var(--cream);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4Z"></path><path d="M3 8v8l9 4 9-4V8"></path></svg>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--mist);">
+          <span>{{ t.departure }} {{ execStartTime }}</span><span>{{ t.arrival }} ~{{ execEndTime }}</span>
+        </div>
+      </div>
+
+      <div style="margin:0 16px 16px;background:var(--cream2);border:0.5px solid var(--line);border-radius:16px;padding:14px;">
+        <div style="font-size:13px;font-weight:600;color:var(--espresso);margin-bottom:10px;">{{ t.requiredDocs }}</div>
+        <sc-for list="{{ docsList }}" as="d" hint-placeholder-count="4">
+        <div onClick="{{ d.onTap }}" style="display:flex;align-items:center;gap:10px;padding:9px 0;cursor:pointer;">
+          <div style="width:30px;height:30px;border-radius:8px;background:{{ d.iconBg }};color:{{ d.iconColor }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <sc-if value="{{ d.isDone }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></sc-if>
+            <sc-if value="{{ d.isPending }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4V8Z"></path><circle cx="12" cy="13" r="3.2"></circle></svg></sc-if>
+          </div>
+          <div style="flex:1;"><div style="font-size:12px;font-weight:500;color:var(--espresso);">{{ d.label }}</div><div style="font-size:10px;color:var(--mist);">{{ d.sub }}</div></div>
+        </div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ execDone }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ closeExecution }}" style="width:calc(100% - 32px);margin:0 16px;background:var(--sage);color:#fff;border:none;padding:16px;border-radius:14px;font-size:14.5px;font-weight:700;font-family:var(--sans);cursor:pointer;">{{ t.backToMissions }}</button>
+      </sc-if>
+      <sc-if value="{{ execNotDone }}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{ execAdvance }}" style="width:calc(100% - 32px);margin:0 16px;background:var(--espresso);color:var(--cream);border:none;padding:16px;border-radius:14px;font-size:14.5px;font-weight:700;font-family:var(--sans);cursor:pointer;">{{ execBtnLabel }}</button>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:200;">
+      <div onClick="{{ closeDrawer }}" style="position:absolute;inset:0;background:rgba(26,23,20,0.35);"></div>
+      <div style="position:absolute;top:0;left:0;bottom:0;width:270px;background:var(--cream2);box-shadow:12px 0 40px rgba(26,23,20,0.2);padding:60px 20px 30px;box-sizing:border-box;display:flex;flex-direction:column;">
+        <div style="font-family:var(--serif);font-size:22px;color:var(--espresso);margin-bottom:2px;">LogiFlow</div>
+        <div style="font-size:11.5px;color:var(--mist);margin-bottom:28px;">{{ t.driverSpace }}</div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div onClick="{{ goMissions }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;background:{{ navMissionsBg }};color:{{ navMissionsColor }};cursor:pointer;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="4"></circle><circle cx="12" cy="12" r=".6" fill="currentColor"></circle></svg>
+            <span style="font-size:14px;font-weight:500;">{{ t.navMissions }}</span>
+          </div>
+          <div onClick="{{ goPlanning }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;background:{{ navPlanningBg }};color:{{ navPlanningColor }};cursor:pointer;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12"></path><circle cx="4" cy="6" r="1" fill="currentColor"></circle><circle cx="4" cy="12" r="1" fill="currentColor"></circle><circle cx="4" cy="18" r="1" fill="currentColor"></circle></svg>
+            <span style="font-size:14px;font-weight:500;">{{ t.navPlanning }}</span>
+          </div>
+          <div onClick="{{ goRevenus }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;background:{{ navRevenusBg }};color:{{ navRevenusColor }};cursor:pointer;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 6.5a7 7 0 1 0 0 11M4.5 10h9M4.5 14h7"></path></svg>
+            <span style="font-size:14px;font-weight:500;">{{ t.navRevenus }}</span>
+          </div>
+          <div onClick="{{ goProfil }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;background:{{ navProfilBg }};color:{{ navProfilColor }};cursor:pointer;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"></circle><path d="M4.5 20a7.5 7.5 0 0 1 15 0"></path></svg>
+            <span style="font-size:14px;font-weight:500;">{{ t.navProfil }}</span>
+          </div>
+        </div>
+        <div style="margin-top:auto;padding-top:16px;border-top:0.5px solid var(--line);">
+          <div onClick="{{ logout }}" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--terracotta);cursor:pointer;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"></path><path d="M15 8l4 4-4 4"></path><path d="M19 12H9"></path></svg>
+            <span style="font-size:14px;font-weight:500;">{{ t.logout }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ detailOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:150;display:flex;align-items:flex-end;">
+      <div onClick="{{ closeDetail }}" style="position:absolute;inset:0;background:rgba(26,23,20,0.35);"></div>
+      <div style="position:relative;width:100%;background:var(--cream2);border-radius:24px 24px 0 0;padding:22px 22px 26px;box-sizing:border-box;box-shadow:0 -20px 50px rgba(26,23,20,0.25);">
+        <div style="width:36px;height:4px;background:var(--line);border-radius:2px;margin:0 auto 18px;"></div>
+        <h3 style="font-family:var(--serif);font-size:22px;font-weight:400;color:var(--espresso);margin:0 0 4px;">{{ detailFrom }} &rarr; {{ detailTo }}</h3>
+        <p style="font-size:12.5px;color:var(--mist);margin:0 0 16px;">{{ detailDate }} {{ detailTime }} &middot; {{ detailDistance }} &middot; {{ detailVehicle }}</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--cream);border-radius:14px;padding:14px 16px;margin-bottom:18px;">
+          <span style="font-size:12.5px;color:var(--taupe);">{{ t.proposedRate }}</span>
+          <span style="font-family:var(--serif);font-size:22px;color:var(--espresso);">{{ detailPrice }}</span>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button onClick="{{ declineDetail }}" style="flex:1;background:var(--cream);border:1px solid var(--line);color:var(--terracotta);padding:15px;border-radius:14px;font-size:14px;font-weight:600;font-family:var(--sans);cursor:pointer;">{{ t.decline }}</button>
+          <button onClick="{{ acceptDetail }}" style="flex:1.4;background:var(--espresso);border:none;color:var(--cream);padding:15px;border-radius:14px;font-size:14px;font-weight:600;font-family:var(--sans);cursor:pointer;">{{ t.acceptMission }}</button>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ payoutOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:250;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;">
+      <div onClick="{{ closePayout }}" style="position:absolute;inset:0;background:rgba(26,23,20,0.4);"></div>
+      <div style="position:relative;width:100%;background:var(--cream2);border-radius:20px;padding:26px 22px;box-sizing:border-box;text-align:center;">
+        <sc-if value="{{ payoutDone }}" hint-placeholder-val="{{ false }}">
+          <div style="width:56px;height:56px;border-radius:50%;background:var(--sage-soft);color:var(--sage);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+          </div>
+          <h3 style="font-family:var(--serif);font-size:20px;color:var(--espresso);margin:0 0 6px;">{{ t.payoutRequested }}</h3>
+          <p style="font-size:12.5px;color:var(--mist);margin:0 0 20px;">{{ t.payoutEta }}</p>
+          <button onClick="{{ closePayout }}" style="width:100%;background:var(--espresso);color:var(--cream);border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:600;font-family:var(--sans);cursor:pointer;">{{ t.close }}</button>
+        </sc-if>
+        <sc-if value="{{ payoutNotDone }}" hint-placeholder-val="{{ true }}">
+          <h3 style="font-family:var(--serif);font-size:20px;color:var(--espresso);margin:0 0 6px;">{{ t.requestPayout }}</h3>
+          <p style="font-size:12.5px;color:var(--mist);margin:0 0 18px;">{{ t.availableBalance }}</p>
+          <div style="font-family:var(--serif);font-size:32px;color:var(--espresso);margin-bottom:20px;">2 840 &euro;</div>
+          <button onClick="{{ confirmPayout }}" style="width:100%;background:var(--espresso);color:var(--cream);border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:600;font-family:var(--sans);cursor:pointer;margin-bottom:10px;">{{ payoutBtnLabel }}</button>
+          <button onClick="{{ closePayout }}" style="width:100%;background:none;border:none;color:var(--mist);padding:8px;font-size:13px;font-family:var(--sans);cursor:pointer;">{{ t.cancel }}</button>
+        </sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ toastVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;bottom:26px;left:50%;background:var(--espresso);color:var(--cream);padding:12px 20px;border-radius:100px;font-size:12.5px;font-weight:500;z-index:300;box-shadow:0 10px 30px rgba(26,23,20,0.3);animation:lfToastIn .3s ease-out;white-space:nowrap;">{{ toast }}</div>
+    </sc-if>
+
+  </div>
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const STRINGS = {
+  fr: {
+    skip: 'Passer', next: 'Suivant', start: 'Commencer',
+    missionsAvailable: "missions disponibles \u00b7 glissez pour accepter ou refuser",
+    decline: 'Refuser', accept: 'Accepter', noMissions: "Plus de missions pour l'instant.",
+    thisWeek: 'Cette semaine', vsLastWeek: '+18% vs semaine derni\u00e8re', monthlyGoal: 'Objectif mensuel',
+    weeklyTrend: '\u00c9volution hebdomadaire', recentMissions: 'Derni\u00e8res missions', requestPayout: 'Demander un virement',
+    driverRole: 'PL Renault \u00b7 Convoyeur ind\u00e9pendant', documents: 'Documents', account: 'Compte',
+    interfaceLanguage: "Langue de l'interface", logout: 'D\u00e9connexion',
+    shipperInstructions: "Instructions donneur d'ordre", route: 'Itin\u00e9raire',
+    departure: 'D\u00e9part', arrival: 'Arriv\u00e9e', requiredDocs: 'Documents requis',
+    backToMissions: 'Retour aux missions',
+    driverSpace: 'Espace convoyeur', navMissions: 'Missions', navPlanning: 'Planning', navRevenus: 'Revenus', navProfil: 'Profil',
+    proposedRate: 'Tarif propos\u00e9', acceptMission: 'Accepter la mission',
+    payoutRequested: 'Virement demand\u00e9', payoutEta: '2 840 \u20ac arriveront sous 1 \u00e0 2 jours ouvr\u00e9s.',
+    close: 'Fermer', availableBalance: 'Solde disponible', cancel: 'Annuler',
+    confirmLoading: 'Confirmer le chargement', reportArrival: 'Signaler arriv\u00e9e', processing: 'Traitement...', confirmPayoutBtn: 'Confirmer le virement',
+    screenTitles: { missions: 'Missions', planning: 'Planning', revenus: 'Revenus', profil: 'Profil' },
+    stepLabels: { accepted: 'Accept\u00e9e', loading: 'Chargement', route: 'En route', done: 'Livr\u00e9' },
+    planningLabels: { today: "Aujourd'hui", tomorrow: 'Demain', week: 'Cette semaine' },
+    toasts: {
+      missionAccepted: 'Mission accept\u00e9e', missionDeclined: 'Mission refus\u00e9e', photoCaptured: 'Photo captur\u00e9e',
+      addPhotoFirst: 'Ajoutez une photo avant de continuer', loadingConfirmed: 'Chargement confirm\u00e9', deliveryConfirmed: 'Livraison confirm\u00e9e',
+      langFr: 'Langue: Fran\u00e7ais', langEn: 'Language: English'
+    },
+    docs: {
+      charge: { label: 'Bon de chargement', doneSub: 'Sign\u00e9 num\u00e9riquement', pendingSub: 'En attente de signature' },
+      photo: { label: "Photos de l'\u00e9tat", doneSub: '3 photos ajout\u00e9es', pendingSub: '3 photos minimum \u2014 toucher pour capturer' },
+      assurance: { label: 'Attestation assurance', doneSub: 'Valid\u00e9e', pendingSub: '\u00c0 t\u00e9l\u00e9verser' },
+      cmr: { label: 'CMR', doneSub: 'Compl\u00e9t\u00e9', pendingSub: '\u00c0 compl\u00e9ter' }
+    }
+  },
+  en: {
+    skip: 'Skip', next: 'Next', start: 'Get started',
+    missionsAvailable: 'missions available \u00b7 swipe to accept or decline',
+    decline: 'Decline', accept: 'Accept', noMissions: 'No more missions for now.',
+    thisWeek: 'This week', vsLastWeek: '+18% vs last week', monthlyGoal: 'Monthly goal',
+    weeklyTrend: 'Weekly trend', recentMissions: 'Recent missions', requestPayout: 'Request payout',
+    driverRole: 'Renault truck \u00b7 Independent driver', documents: 'Documents', account: 'Account',
+    interfaceLanguage: 'Interface language', logout: 'Log out',
+    shipperInstructions: 'Shipper instructions', route: 'Route',
+    departure: 'Departure', arrival: 'Arrival', requiredDocs: 'Required documents',
+    backToMissions: 'Back to missions',
+    driverSpace: 'Driver space', navMissions: 'Missions', navPlanning: 'Planning', navRevenus: 'Earnings', navProfil: 'Profile',
+    proposedRate: 'Proposed rate', acceptMission: 'Accept mission',
+    payoutRequested: 'Payout requested', payoutEta: '\u20ac2,840 will arrive within 1 to 2 business days.',
+    close: 'Close', availableBalance: 'Available balance', cancel: 'Cancel',
+    confirmLoading: 'Confirm loading', reportArrival: 'Report arrival', processing: 'Processing...', confirmPayoutBtn: 'Confirm payout',
+    screenTitles: { missions: 'Missions', planning: 'Planning', revenus: 'Earnings', profil: 'Profile' },
+    stepLabels: { accepted: 'Accepted', loading: 'Loading', route: 'En route', done: 'Delivered' },
+    planningLabels: { today: 'Today', tomorrow: 'Tomorrow', week: 'This week' },
+    toasts: {
+      missionAccepted: 'Mission accepted', missionDeclined: 'Mission declined', photoCaptured: 'Photo captured',
+      addPhotoFirst: 'Add a photo before continuing', loadingConfirmed: 'Loading confirmed', deliveryConfirmed: 'Delivery confirmed',
+      langFr: 'Langue: Fran\u00e7ais', langEn: 'Language: English'
+    },
+    docs: {
+      charge: { label: 'Loading slip', doneSub: 'Signed digitally', pendingSub: 'Awaiting signature' },
+      photo: { label: 'Condition photos', doneSub: '3 photos added', pendingSub: '3 photos minimum \u2014 tap to capture' },
+      assurance: { label: 'Insurance certificate', doneSub: 'Verified', pendingSub: 'To upload' },
+      cmr: { label: 'CMR', doneSub: 'Completed', pendingSub: 'To complete' }
+    }
+  }
+};
+
+const ONB = [
+  { icon: 'target',
+    fr: { title: 'Trouvez vos missions', desc: "Parcourez les missions disponibles pr\u00e8s de chez vous et choisissez celles qui vous conviennent." },
+    en: { title: 'Find your missions', desc: 'Browse available missions near you and pick the ones that suit you.' } },
+  { icon: 'pin',
+    fr: { title: 'Suivez en temps r\u00e9el', desc: "Itin\u00e9raire, statuts et documents centralis\u00e9s \u00e0 chaque \u00e9tape de la livraison." },
+    en: { title: 'Track in real time', desc: 'Route, status and documents all in one place at every delivery step.' } },
+  { icon: 'wallet',
+    fr: { title: 'Soyez pay\u00e9 rapidement', desc: "Suivez vos revenus et demandez un virement en un tap." },
+    en: { title: 'Get paid fast', desc: 'Track your earnings and request a payout in one tap.' } }
+];
+
+const MISSIONS = [
+  { id: 1, from: 'Paris', to: 'Lyon', when: 'today', time: '14:00', distance: '465 km', price: '680 \u20ac',
+    fr: { date: "Aujourd'hui", vehicle: 'PL frigorifique', tag: 'Urgent', instructions: "Marchandise fragile \u2014 manipulation avec soin. Livraison au quai B, contacter M. Durand." },
+    en: { date: 'Today', vehicle: 'Refrigerated truck', tag: 'Urgent', instructions: 'Fragile goods \u2014 handle with care. Deliver to dock B, contact Mr. Durand.' },
+    tagKind: 'urgent', endTime: '18:30' },
+  { id: 2, from: 'Lyon', to: 'Marseille', when: 'today', time: '18:00', distance: '315 km', price: '520 \u20ac',
+    fr: { date: "Aujourd'hui", vehicle: 'PL', tag: 'Urgent', instructions: "D\u00e9chargement quai 4, badge visiteur \u00e0 retirer \u00e0 l'accueil." },
+    en: { date: 'Today', vehicle: 'Truck', tag: 'Urgent', instructions: 'Unload at dock 4, pick up visitor badge at reception.' },
+    tagKind: 'urgent', endTime: '21:15' },
+  { id: 3, from: 'Lille', to: 'Bruxelles', when: 'tomorrow', time: '08:00', distance: '110 km', price: '240 \u20ac',
+    fr: { date: 'Demain', vehicle: 'Fourgon', tag: 'Frigo', instructions: "Temp\u00e9rature contr\u00f4l\u00e9e \u00e0 4\u00b0C. V\u00e9rifier la sonde avant d\u00e9part." },
+    en: { date: 'Tomorrow', vehicle: 'Van', tag: 'Refrigerated', instructions: 'Temperature controlled at 4\u00b0C. Check the probe before departure.' },
+    tagKind: 'frigo', endTime: '09:40' },
+  { id: 4, from: 'Nantes', to: 'Rennes', when: 'week', time: '10:00', distance: '115 km', price: '180 \u20ac',
+    fr: { date: 'Mercredi', vehicle: 'Utilitaire', tag: 'Standard', instructions: "Livraison particulier, sonner \u00e0 l'interphone \u00ab\u00a0Martin\u00a0\u00bb." },
+    en: { date: 'Wednesday', vehicle: 'Utility van', tag: 'Standard', instructions: 'Residential delivery, ring the "Martin" intercom.' },
+    tagKind: 'standard', endTime: '11:30' },
+  { id: 5, from: 'Bordeaux', to: 'Toulouse', when: 'week', time: '06:00', distance: '245 km', price: '410 \u20ac',
+    fr: { date: 'Jeudi', vehicle: 'PL', tag: 'Longue distance', instructions: "D\u00e9part t\u00f4t, pause obligatoire pr\u00e9vue \u00e0 mi-parcours." },
+    en: { date: 'Thursday', vehicle: 'Truck', tag: 'Long haul', instructions: 'Early departure, mandatory break scheduled halfway.' },
+    tagKind: 'longue', endTime: '09:20' },
+  { id: 6, from: 'Strasbourg', to: 'Metz', when: 'week', time: '15:30', distance: '165 km', price: '220 \u20ac',
+    fr: { date: 'Vendredi', vehicle: 'Fourgon', tag: 'Retour', instructions: "Trajet retour \u00e0 vide, chargement optionnel en cours de route." },
+    en: { date: 'Friday', vehicle: 'Van', tag: 'Return leg', instructions: 'Empty return leg, optional pickup along the way.' },
+    tagKind: 'retour', endTime: '17:10' }
+];
+
+const BARS = { fr: ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'], en: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] };
+const BAR_H = [45, 60, 35, 80, 55, 90, 70];
+
+const RECENT = [
+  { route: 'Lyon \u2192 Marseille', amount: '+520 \u20ac', fr: "Aujourd'hui \u2022 315 km", en: 'Today \u2022 315 km' },
+  { route: 'Bordeaux \u2192 Toulouse', amount: '+410 \u20ac', fr: 'Hier \u2022 245 km', en: 'Yesterday \u2022 245 km' },
+  { route: 'Nantes \u2192 Rennes', amount: '+180 \u20ac', fr: 'Il y a 2 jours \u2022 115 km', en: '2 days ago \u2022 115 km' }
+];
+
+const TAG_STYLE = {
+  urgent: { bg: 'var(--terracotta-soft)', color: 'var(--terracotta)' },
+  frigo: { bg: 'var(--camel-soft)', color: 'var(--espresso)' },
+  standard: { bg: 'var(--line)', color: 'var(--taupe)' },
+  longue: { bg: 'var(--espresso)', color: 'var(--cream)' },
+  retour: { bg: 'var(--camel-soft)', color: 'var(--espresso)' }
+};
+
+class Component extends DCLogic {
+  state = {
+    screen: 'onboarding',
+    onbStep: 0, onbDragX: 0, onbDragging: false, onbStartX: 0,
+    drawerOpen: false,
+    missions: MISSIONS.slice(),
+    dragId: null, dragX: 0, dragStartX: 0,
+    detailId: null,
+    execution: null, execStep: 'loading',
+    docs: { charge: 'done', photo: 'pending', assurance: 'pending', cmr: 'done' },
+    payoutOpen: false, payoutProcessing: false, payoutDone: false,
+    lang: 'fr',
+    toast: null
+  };
+
+  toggleLanguage() {
+    const next = this.state.lang === 'fr' ? 'en' : 'fr';
+    this.setState({ lang: next });
+    this.showToast(STRINGS[next].toasts[next === 'fr' ? 'langFr' : 'langEn']);
+  }
+
+  goScreen(name) { this.setState({ screen: name, drawerOpen: false }); }
+  toggleDrawer() { this.setState(s => ({ drawerOpen: !s.drawerOpen })); }
+  closeDrawer() { this.setState({ drawerOpen: false }); }
+
+  onbDown(e) { this.setState({ onbDragging: true, onbStartX: e.clientX, onbDragX: 0 }); }
+  onbMove(e) { if (!this.state.onbDragging) return; this.setState({ onbDragX: e.clientX - this.state.onbStartX }); }
+  onbUp() {
+    const { onbDragX, onbStep } = this.state;
+    let step = onbStep;
+    if (onbDragX < -60 && onbStep < 2) step = onbStep + 1;
+    else if (onbDragX > 60 && onbStep > 0) step = onbStep - 1;
+    this.setState({ onbDragging: false, onbDragX: 0, onbStep: step });
+  }
+  onbGoto(i) { this.setState({ onbStep: i }); }
+  finishOnb() { this.setState({ screen: 'missions' }); }
+
+  cardDown(id, e) { this.setState({ dragId: id, dragStartX: e.clientX, dragX: 0 }); }
+  cardMove(id, e) { if (this.state.dragId !== id) return; this.setState({ dragX: e.clientX - this.state.dragStartX }); }
+  cardUp(id) {
+    if (this.state.dragId !== id) return;
+    const dx = this.state.dragX;
+    if (dx > 100) this.acceptMission(id);
+    else if (dx < -100) this.declineMission(id);
+    else this.setState({ dragId: null, dragX: 0 });
+  }
+
+  acceptMission(id) {
+    const m = this.state.missions.find(x => x.id === id);
+    this.setState(s => ({ missions: s.missions.filter(x => x.id !== id), dragId: null, dragX: 0, detailId: null }));
+    this.showToast(STRINGS[this.state.lang].toasts.missionAccepted);
+    if (m) this.startExecution(m);
+  }
+  declineMission(id) {
+    this.setState(s => ({ missions: s.missions.filter(x => x.id !== id), dragId: null, dragX: 0, detailId: null }));
+    this.showToast(STRINGS[this.state.lang].toasts.missionDeclined);
+  }
+
+  openDetail(id, e) { if (e) e.stopPropagation(); this.setState({ detailId: id }); }
+  closeDetail() { this.setState({ detailId: null }); }
+
+  startExecution(m) {
+    this.setState({ execution: m, execStep: 'loading', screen: 'execution', docs: { charge: 'done', photo: 'pending', assurance: 'pending', cmr: 'done' } });
+  }
+  closeExecution() { this.setState({ execution: null, screen: 'missions' }); }
+
+  captureDoc(key) {
+    if (this.state.docs[key] === 'done') return;
+    this.setState(s => ({ docs: { ...s.docs, [key]: 'done' } }));
+    this.showToast(STRINGS[this.state.lang].toasts.photoCaptured);
+  }
+
+  advanceExec() {
+    const { execStep, docs, lang } = this.state;
+    const t = STRINGS[lang];
+    if (execStep === 'loading') {
+      if (docs.photo !== 'done') { this.showToast(t.toasts.addPhotoFirst); return; }
+      this.setState({ execStep: 'route' });
+      this.showToast(t.toasts.loadingConfirmed);
+    } else if (execStep === 'route') {
+      this.setState({ execStep: 'done' });
+      this.showToast(t.toasts.deliveryConfirmed);
+    }
+  }
+
+  openPayout() { this.setState({ payoutOpen: true, payoutProcessing: false, payoutDone: false }); }
+  confirmPayout() {
+    this.setState({ payoutProcessing: true });
+    setTimeout(() => this.setState({ payoutProcessing: false, payoutDone: true }), 900);
+  }
+  closePayout() { this.setState({ payoutOpen: false }); }
+
+  logout() { this.setState({ screen: 'onboarding', onbStep: 0, drawerOpen: false, missions: MISSIONS.slice() }); }
+
+  showToast(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 2200);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const lang = s.lang;
+    const t = STRINGS[lang];
+
+    const onbSlides = ONB.map((o, i) => ({
+      title: o[lang].title, desc: o[lang].desc,
+      iconTarget: o.icon === 'target', iconPin: o.icon === 'pin', iconWallet: o.icon === 'wallet',
+      dotWidth: i === s.onbStep ? '22px' : '8px',
+      dotBg: i === s.onbStep ? 'var(--espresso)' : 'var(--line)',
+      onGoto: () => this.onbGoto(i)
+    }));
+
+    const missions = s.missions.map(m => {
+      const dragging = s.dragId === m.id;
+      const dx = dragging ? s.dragX : 0;
+      const ts = TAG_STYLE[m.tagKind] || TAG_STYLE.standard;
+      return {
+        id: m.id, from: m.from, to: m.to, time: m.time, distance: m.distance, price: m.price,
+        date: m[lang].date, vehicle: m[lang].vehicle, tag: m[lang].tag, instructions: m[lang].instructions,
+        endTime: m.endTime,
+        tagBg: ts.bg, tagColor: ts.color,
+        dragTransform: `translateX(${dx}px) rotate(${(dx / 28).toFixed(2)}deg)`,
+        leftHintOpacity: dx < 0 ? Math.min(1, -dx / 80) : 0,
+        rightHintOpacity: dx > 0 ? Math.min(1, dx / 80) : 0,
+        onDown: (e) => this.cardDown(m.id, e),
+        onMove: (e) => this.cardMove(m.id, e),
+        onUp: () => this.cardUp(m.id),
+        onInfo: (e) => this.openDetail(m.id, e)
+      };
+    });
+
+    const detail = s.detailId != null ? missions.find(m => m.id === s.detailId) : null;
+
+    const planningGroups = ['today', 'tomorrow', 'week'].map(key => ({
+      key, label: t.planningLabels[key],
+      items: missions.filter(m => s.missions.find(sm => sm.id === m.id).when === key)
+    })).filter(g => g.items.length > 0);
+
+    const docsList = ['charge', 'photo', 'assurance', 'cmr'].map(key => {
+      const status = s.docs[key];
+      const d = t.docs[key];
+      return {
+        key, label: d.label, status,
+        sub: status === 'done' ? d.doneSub : d.pendingSub,
+        isDone: status === 'done', isPending: status !== 'done',
+        iconBg: status === 'done' ? 'var(--sage-soft)' : 'var(--camel-soft)',
+        iconColor: status === 'done' ? 'var(--sage)' : 'var(--espresso)',
+        onTap: () => this.captureDoc(key)
+      };
+    });
+
+    const stepOrder = ['accepted', 'loading', 'route', 'done'];
+    const curIdx = { loading: 1, route: 2, done: 3 }[s.execStep] ?? 1;
+    const execStepsDisplay = stepOrder.map((k, i) => {
+      const done = i < curIdx, active = i === curIdx;
+      return {
+        key: k, label: t.stepLabels[k], mark: done ? '\u2713' : String(i + 1),
+        circleBg: done ? 'var(--sage)' : active ? 'var(--espresso)' : 'var(--cream2)',
+        circleBorder: done ? 'var(--sage)' : active ? 'var(--espresso)' : 'var(--line)',
+        circleColor: (done || active) ? '#fff' : 'var(--mist)',
+        labelColor: active ? 'var(--espresso)' : done ? 'var(--sage)' : 'var(--mist)'
+      };
+    });
+
+    const recentEarnings = RECENT.map(r => ({ route: r.route, amount: r.amount, date: r[lang] }));
+    const earningsBars = BAR_H.map((h, i) => ({ h, day: BARS[lang][i] }));
+
+    return {
+      t,
+      isOnboarding: s.screen === 'onboarding',
+      isAppScreen: ['missions', 'planning', 'revenus', 'profil'].includes(s.screen),
+      isExecution: s.screen === 'execution',
+      isMissions: s.screen === 'missions', isPlanning: s.screen === 'planning',
+      isRevenus: s.screen === 'revenus', isProfil: s.screen === 'profil',
+      screenTitle: t.screenTitles[s.screen] || '',
+
+      onbTrackStyle: `translateX(calc(-${s.onbStep * 100}% + ${s.onbDragging ? s.onbDragX : 0}px))`,
+      onbDown: (e) => this.onbDown(e), onbMove: (e) => this.onbMove(e), onbUp: () => this.onbUp(),
+      onbSlides,
+      onbBtnLabel: s.onbStep === 2 ? t.start : t.next,
+      onbNext: () => s.onbStep < 2 ? this.setState({ onbStep: s.onbStep + 1 }) : this.finishOnb(),
+      onbSkip: () => this.finishOnb(),
+
+      toggleDrawer: () => this.toggleDrawer(), closeDrawer: () => this.closeDrawer(), drawerOpen: s.drawerOpen,
+      goMissions: () => this.goScreen('missions'), goPlanning: () => this.goScreen('planning'),
+      goRevenus: () => this.goScreen('revenus'), goProfil: () => this.goScreen('profil'),
+      logout: () => this.logout(),
+      navMissionsBg: s.screen === 'missions' ? 'var(--camel-soft)' : 'transparent', navMissionsColor: 'var(--espresso)',
+      navPlanningBg: s.screen === 'planning' ? 'var(--camel-soft)' : 'transparent', navPlanningColor: 'var(--espresso)',
+      navRevenusBg: s.screen === 'revenus' ? 'var(--camel-soft)' : 'transparent', navRevenusColor: 'var(--espresso)',
+      navProfilBg: s.screen === 'profil' ? 'var(--camel-soft)' : 'transparent', navProfilColor: 'var(--espresso)',
+
+      missions, missionsCount: missions.length, missionsEmpty: missions.length === 0,
+      planningGroups,
+      earningsBars, recentEarnings,
+      docsList,
+
+      detailOpen: !!detail,
+      detailFrom: detail?.from, detailTo: detail?.to, detailDate: detail?.date, detailTime: detail?.time,
+      detailDistance: detail?.distance, detailVehicle: detail?.vehicle, detailPrice: detail?.price,
+      closeDetail: () => this.closeDetail(),
+      acceptDetail: () => detail && this.acceptMission(detail.id),
+      declineDetail: () => detail && this.declineMission(detail.id),
+
+      execution: s.execution,
+      execTitle: s.execution ? `Mission #${1000 + s.execution.id}` : '',
+      execSub: s.execution ? `${s.execution.from} \u2192 ${s.execution.to}` : '',
+      execInstructions: s.execution ? s.execution[lang].instructions : '',
+      execDistance: s.execution?.distance || '',
+      execStartTime: s.execution?.time || '',
+      execEndTime: s.execution?.endTime || '',
+      execStepsDisplay,
+      execBtnLabel: s.execStep === 'loading' ? t.confirmLoading : t.reportArrival,
+      execAdvance: () => this.advanceExec(),
+      execDone: s.execStep === 'done', execNotDone: s.execStep !== 'done',
+      closeExecution: () => this.closeExecution(),
+
+      payoutOpen: s.payoutOpen, payoutDone: s.payoutDone, payoutNotDone: !s.payoutDone,
+      payoutBtnLabel: s.payoutProcessing ? t.processing : t.confirmPayoutBtn,
+      openPayout: () => this.openPayout(), confirmPayout: () => this.confirmPayout(), closePayout: () => this.closePayout(),
+
+      currentLanguage: lang === 'fr' ? 'Fran\u00e7ais' : 'English', toggleLanguage: () => this.toggleLanguage(),
+      toast: s.toast, toastVisible: !!s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
