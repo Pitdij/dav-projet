@@ -242,7 +242,7 @@ var PARTICIPANTS={
   Pilates:[{v:'Solo',l:'Solo'},{v:'Duo',l:'Duo'},{v:'Trio',l:'Trio'}],
   Yoga:[{v:'Solo',l:'Solo'},{v:'Duo',l:'Duo'}],
   Reiki:[{v:'Solo',l:'Solo'}],
-  Barre:[{v:'Solo',l:'Solo'},{v:'Duo',l:'Duo'}]
+  Barre:[{v:'Solo',l:'Solo'},{v:'Duo',l:'Duo'},{v:'Trio',l:'Trio'}]
 };
 
 /* Étape 3 — types de séance (Pilates uniquement) */
@@ -253,58 +253,63 @@ var T={
   /* ── PILATES ── */
   'P-Machine-Solo':{ti:'Machine',su:'Séance Solo',r:[
     {n:"À l'unité",d:'Validité 1 mois',p:'75 €',t:null},
-    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'72 €',t:'720 € au total'},
-    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'70 €',t:'1 400 € au total',b:1}]},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'71 €',t:'710 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'67 €',t:'1 340 € au total',b:1}]},
   'P-Machine-Duo':{ti:'Machine',su:'Séance Duo · par personne',r:[
     {n:"À l'unité",d:'Validité 1 mois',p:'55 €',t:null},
     {n:'Forfait 10 cours',d:'Validité 3 mois',p:'52 €',t:'520 € au total'},
-    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'50 €',t:'1 000 € au total',b:1}]},
-  'P-Tapis-Solo':{ti:'Tapis',su:'Séance Solo',r:[
-    {n:"À l'unité",d:'Validité 1 mois',p:'60 €',t:null},
-    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'58 €',t:'580 € au total'},
-    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'56 €',t:'1 120 € au total',b:1}]},
-  'P-Tapis-Duo':{ti:'Tapis',su:'Séance Duo · par personne',r:[
-    {n:"À l'unité",d:'Validité 1 mois',p:'30 €',t:null},
-    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'29 €',t:'290 € au total'},
-    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'28 €',t:'560 € au total',b:1}]},
-  'P-Tapis-Trio':{ti:'Tapis',su:'Séance Trio · par personne',r:[
-    {n:"À l'unité",d:'Validité 1 mois',p:'23 €',t:null},
-    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'21 €',t:'210 € au total'},
-    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'19 €',t:'380 € au total',b:1}]},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'49 €',t:'980 € au total',b:1}]},
   'P-Mix-Solo':{ti:'Mix',su:'Machine & Tapis · Séance Solo',r:[
     {n:"À l'unité",d:'Validité 1 mois',p:'70 €',t:null},
-    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'68 €',t:'680 € au total'},
-    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'64 €',t:'1 280 € au total',b:1}]},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'66 €',t:'660 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'63 €',t:'1 260 € au total',b:1}]},
   'P-Mix-Duo':{ti:'Mix',su:'Machine & Tapis · Séance Duo · par personne',r:[
-    {n:"À l'unité",d:'Validité 1 mois',p:'53 €',t:null},
-    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'51 €',t:'510 € au total'},
-    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'49 €',t:'980 € au total',b:1}]},
+    {n:"À l'unité",d:'Validité 1 mois',p:'50 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'47 €',t:'470 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'45 €',t:'900 € au total',b:1}]},
+  'P-Tapis-Solo':{ti:'Tapis',su:'Séance Solo',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'60 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'57 €',t:'570 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'54 €',t:'1 080 € au total',b:1}]},
+  'P-Tapis-Duo':{ti:'Tapis',su:'Séance Duo · par personne',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'45 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'42 €',t:'420 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'40 €',t:'800 € au total',b:1}]},
+  'P-Tapis-Trio':{ti:'Tapis',su:'Séance Trio · par personne',r:[
+    {n:"À l'unité",d:'Validité 1 mois',p:'35 €',t:null},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'33 €',t:'330 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'31 €',t:'620 € au total',b:1}]},
   /* ── YOGA ── */
   'Y-Solo':{ti:'Yoga',su:'Séance Solo',r:[
     {n:"À l'unité",d:'Validité 1 mois',p:'30 €',t:null},
     {n:'Forfait 10 cours',d:'Validité 3 mois',p:'28 €',t:'280 € au total'},
-    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'25 €',t:'500 € au total',b:1}]},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'27 €',t:'540 € au total',b:1}]},
   'Y-Duo':{ti:'Yoga',su:'Séance Duo · par personne',r:[
     {n:"À l'unité",d:'Validité 1 mois',p:'20 €',t:null},
-    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'18 €',t:'180 € au total'},
-    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'15 €',t:'300 € au total',b:1}]},
-  /* ── REIKI ── */
-  'R-Solo':{ti:'Reiki',su:'Séance Solo · environ 1 h 30',r:[
-    {n:'Une séance',d:'Validité 1 mois',p:'50 €',t:null},
-    {n:'Forfait 3 séances',d:'Validité 3 mois',p:'45 €',t:'135 € au total'},
-    {n:'Forfait 10 séances',d:'Validité 12 mois',p:'40 €',t:'400 € au total',b:1}]},
+    {n:'Forfait 10 cours',d:'Validité 3 mois',p:'19 €',t:'190 € au total'},
+    {n:'Forfait 20 cours',d:'Validité 6 mois',p:'18 €',t:'360 € au total',b:1}]},
   /* ── BARRE AU SOL ── */
   'B-Solo':{ti:'Barre au sol',su:'Séance Solo · tarif horaire',u:'heure',r:[
     {n:'1 heure',d:'Validité 1 mois',p:'60 €',t:null},
     {n:'Forfait 10 heures',d:'Validité 3 mois',p:'57 €',t:'570 € au total'},
-    {n:'Forfait 20 heures',d:'Validité 6 mois',p:'55 €',t:'1 100 € au total',b:1}]},
+    {n:'Forfait 20 heures',d:'Validité 6 mois',p:'54 €',t:'1 080 € au total',b:1}]},
   'B-Duo':{ti:'Barre au sol',su:'Séance Duo · par personne · tarif horaire',u:'heure',r:[
-    {n:'1 heure',d:'Validité 1 mois',p:'30 €',t:null},
-    {n:'Forfait 10 heures',d:'Validité 3 mois',p:'27 €',t:'270 € au total'},
-    {n:'Forfait 20 heures',d:'Validité 6 mois',p:'25 €',t:'500 € au total',b:1}]}
+    {n:'1 heure',d:'Validité 1 mois',p:'45 €',t:null},
+    {n:'Forfait 10 heures',d:'Validité 3 mois',p:'42 €',t:'420 € au total'},
+    {n:'Forfait 20 heures',d:'Validité 6 mois',p:'40 €',t:'800 € au total',b:1}]},
+  'B-Trio':{ti:'Barre au sol',su:'Séance Trio · par personne · tarif horaire',u:'heure',r:[
+    {n:'1 heure',d:'Validité 1 mois',p:'35 €',t:null},
+    {n:'Forfait 10 heures',d:'Validité 3 mois',p:'33 €',t:'330 € au total'},
+    {n:'Forfait 20 heures',d:'Validité 6 mois',p:'31 €',t:'620 € au total',b:1}]},
+  /* ── REIKI · hors grille : séance d'1 h 30, paliers 3 et 10 ── */
+  'R-Solo':{ti:'Reiki',su:'Séance Solo · environ 1 h 30',r:[
+    {n:'Une séance',d:'Validité 1 mois',p:'50 €',t:null},
+    {n:'Forfait 3 séances',d:'Validité 3 mois',p:'45 €',t:'135 € au total'},
+    {n:'Forfait 10 séances',d:'Validité 12 mois',p:'40 €',t:'400 € au total',b:1}]}
 };
 
-var ESSAI={Pilates:'35 €',Yoga:'12 €',Reiki:'50 €',Barre:'50 €'};
+/* Cours d'essai = 50 % du tarif solo à l'unité, arrondi à 5 € */
+var ESSAI={Pilates:'35 €',Yoga:'15 €',Reiki:'25 €',Barre:'30 €'};
 
 window.pwC=function(field,val,btn){
   if(field==='disc'){ST={disc:val,part:null,type:null};}
